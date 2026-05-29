@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RealHands Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a1a; }
+    header { background: #25D366; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+    header h1 { font-size: 22px; font-weight: 700; }
+    header span { font-size: 13px; opacity: 0.85; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .card .num { font-size: 36px; font-weight: 700; color: #25D366; }
+    .card .label { font-size: 13px; color: #666; margin-top: 4px; }
+    .section { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 24px; }
+    .section h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 8px 12px; background: #f8f9fa; color: #555; font-weight: 600; border-bottom: 2px solid #e9ecef; }
+    td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+    tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+    .badge.available { background: #d4edda; color: #155724; }
+    .badge.unavailable { background: #f8d7da; color: #721c24; }
+    .badge.open { background: #d1ecf1; color: #0c5460; }
+    .badge.filled { background: #d4edda; color: #155724; }
+    .skill-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .skill-bar .name { width: 140px; font-size: 13px; }
+    .skill-bar .bar { flex: 1; height: 16px; background: #e9ecef; border-radius: 8px; overflow: hidden; }
+    .skill-bar .fill { height: 100%; background: #25D366; border-radius: 8px; transition: width .4s; }
+    .skill-bar .count { width: 30px; text-align: right; font-size: 13px; font-weight: 600; color: #25D366; }
+    #login { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    #login .box { background: white; border-radius: 16px; padding: 32px; width: 320px; text-align: center; }
+    #login h2 { margin-bottom: 8px; }
+    #login p { color: #666; font-size: 13px; margin-bottom: 20px; }
+    #login input { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 12px; }
+    #login button { width: 100%; padding: 11px; background: #25D366; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .refresh { float: right; font-size: 12px; color: #25D366; cursor: pointer; text-decoration: underline; }
+    .empty { text-align: center; padding: 32px; color: #aaa; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<div id="login">
+  <div class="box">
+    <h2>🔐 RealHands</h2>
+    <p>Enter dashboard password to continue</p>
+    <input type="password" id="pwd" placeholder="Password" onkeydown="if(event.key==='Enter') login()" />
+    <button onclick="login()">Login</button>
+    <p id="loginErr" style="color:red;font-size:12px;margin-top:8px;"></p>
+  </div>
+</div>
+
+<header>
+  <span style="font-size:28px;">👷</span>
+  <div>
+    <h1>RealHands Dashboard</h1>
+    <span>Hyderabad Labor Marketplace</span>
+  </div>
+</header>
+
+<div class="container">
+  <div class="cards">
+    <div class="card"><div class="num" id="totalWorkers">—</div><div class="label">Total Workers</div></div>
+    <div class="card"><div class="num" id="activeToday">—</div><div class="label">Available Today</div></div>
+    <div class="card"><div class="num" id="totalJobs">—</div><div class="label">Job Requests</div></div>
+    <div class="card"><div class="num" id="lastUpdated">—</div><div class="label">Last Refreshed</div></div>
+  </div>
+
+  <div class="section">
+    <h2>Workers by Skill <span class="refresh" onclick="loadData()">↻ Refresh</span></h2>
+    <div id="skillBars"><div class="empty">Loading...</div></div>
+  </div>
+
+  <div class="section">
+    <h2>Available Workers</h2>
+    <table>
+      <thead><tr><th>Name</th><th>Skill</th><th>Experience</th><th>Wage/Day</th><th>Location</th><th>Status</th></tr></thead>
+      <tbody id="workerTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Recent Job Requests</h2>
+    <table>
+      <thead><tr><th>Skill Needed</th><th>Location</th><th>Workers Needed</th><th>Start Date</th><th>Status</th><th>Posted</th></tr></thead>
+      <tbody id="jobTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  let apiKey = '';
+
+  function login() {
+    apiKey = document.getElementById('pwd').value.trim();
+    if (!apiKey) return;
+    document.getElementById('login').style.display = 'none';
+    loadData();
+  }
+
+  async function loadData() {
+    try {
+      const [statsRes, workersRes] = await Promise.all([
+        fetch(`/api/stats?key=${apiKey}`),
+        fetch(`/api/workers?key=${apiKey}`),
+      ]);
+
+      if (statsRes.status === 401 || workersRes.status === 401) {
+        document.getElementById('loginErr').textContent = 'Wrong password.';
+        document.getElementById('login').style.display = 'flex';
+        return;
+      }
+
+      const { stats, recentJobs } = await statsRes.json();
+      const { workers } = await workersRes.json();
+
+      // Summary cards
+      document.getElementById('totalWorkers').textContent = stats.total;
+      document.getElementById('activeToday').textContent = stats.available;
+      document.getElementById('totalJobs').textContent = recentJobs.length;
+      document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString('en-IN');
+
+      // Skill bars
+      const maxCount = Math.max(...stats.bySkill.map(s => s.count), 1);
+      const skillEmoji = { mason:'🧱', carpenter:'🔨', electrician:'⚡', plumber:'🔧', labour:'🏗️', driver:'🚛', painter:'🎨', cleaner:'🧹' };
+      document.getElementById('skillBars').innerHTML = stats.bySkill.map(s => `
+        <div class="skill-bar">
+          <div class="name">${skillEmoji[s.skill] || '👷'} ${s.skill}</div>
+          <div class="bar"><div class="fill" style="width:${(s.count/maxCount)*100}%"></div></div>
+          <div class="count">${s.count}</div>
+        </div>
+      `).join('') || '<div class="empty">No workers yet</div>';
+
+      // Worker table
+      document.getElementById('workerTable').innerHTML = workers.length
+        ? workers.map(w => `
+            <tr>
+              <td><strong>${w.name}</strong></td>
+              <td>${w.skill}</td>
+              <td>${w.experience}</td>
+              <td>₹${w.wage_min}–${w.wage_max}</td>
+              <td>${w.city || 'Hyderabad'}</td>
+              <td><span class="badge ${w.available ? 'available' : 'unavailable'}">${w.available ? 'Available' : 'Busy'}</span></td>
+            </tr>`).join('')
+        : '<tr><td colspan="6" class="empty">No workers registered yet</td></tr>';
+
+      // Job table
+      document.getElementById('jobTable').innerHTML = recentJobs.length
+        ? recentJobs.map(j => `
+            <tr>
+              <td>${j.skill_needed}</td>
+              <td>${j.address || 'Hyderabad'}</td>
+              <td>${j.workers_needed}</td>
+              <td>${j.start_date}</td>
+              <td><span class="badge ${j.status === 'open' ? 'open' : 'filled'}">${j.status}</span></td>
+              <td>${new Date(j.created_at).toLocaleDateString('en-IN')}</td>
+            </tr>`).join('')
+        : '<tr><td colspan="6" class="empty">No jobs posted yet</td></tr>';
+
+    } catch (err) {
+      console.error('Dashboard error:', err);
+    }
+  }
+
+  // Auto-refresh every 60 seconds
+  setInterval(loadData, 60000);
+</script>
+</body>
+</html>

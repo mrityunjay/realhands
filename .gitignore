@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit
+.env
+
+# SQLite database + WAL sidecar files (data lives on the host/volume)
+*.db
+*.db-wal
+*.db-shm
+
+# OS / logs
+.DS_Store
+npm-debug.log*
+*.log
