@@ -39,7 +39,7 @@ Apni bhasha chuniye / Choose your language:
 
 function askRole(lang) {
   return t(lang,
-    `आप क्या करना चाहते हैं?\n\n1️⃣ 💼 काम ढूंढना है (मैं मज़दूर हूँ)\n2️⃣ 👷 मज़दूर ढूंढना है (मुझे काम कराना है)`,
+    `आप क्या करना चाहते हैं?\n\n1️⃣ 💼 काम ढूंढना है (मैं श्रमिक हूँ)\n2️⃣ 👷 श्रमिक ढूंढना है (मुझे काम कराना है)`,
     `What would you like to do?\n\n1️⃣ 💼 Looking for work (I am a worker)\n2️⃣ 👷 Looking to hire (I need workers)`
   );
 }

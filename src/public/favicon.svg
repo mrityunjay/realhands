@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="RealHands">
+  <defs>
+    <linearGradient id="fav" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2bd06e"/>
+      <stop offset="0.55" stop-color="#10a36f"/>
+      <stop offset="1" stop-color="#075e54"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#fav)"/>
+  <ellipse cx="46" cy="32" rx="38" ry="22" fill="#ffffff" opacity="0.10"/>
+  <path d="M14 104 Q64 90 114 104 L114 116 Q64 122 14 116 Z" fill="#063f39" opacity="0.30"/>
+  <ellipse cx="64" cy="101" rx="22" ry="8" fill="#FFD79A"/>
+  <ellipse cx="64" cy="99" rx="13" ry="5" fill="#FFE9C7"/>
+  <g fill="#ffffff">
+    <g transform="translate(34 44)">
+      <rect x="-2" y="30" width="6" height="18" rx="3" transform="rotate(-7 1 39)"/>
+      <rect x="6" y="31" width="6" height="17" rx="3" transform="rotate(9 9 39)"/>
+      <rect x="-3" y="14" width="13" height="24" rx="6.5" transform="rotate(20 3 26)"/>
+      <circle cx="11" cy="9" r="7.5"/>
+      <rect x="7" y="14" width="5.5" height="20" rx="2.75" transform="rotate(46 10 16)"/>
+      <ellipse cx="11" cy="3" rx="10" ry="5.5" fill="#FFC107"/>
+      <rect x="0" y="3" width="22" height="3.6" rx="1.8" fill="#FFC107"/>
+      <rect x="18" y="12" width="4" height="34" rx="2" transform="rotate(33 20 29)" fill="#eef3f1"/>
+      <path d="M33 44 l9 5 -3 10 -9 -5 z" transform="rotate(33 36 50)" fill="#eef3f1"/>
+    </g>
+    <g transform="translate(94 44) scale(-1,1)">
+      <rect x="-2" y="30" width="6" height="18" rx="3" transform="rotate(-7 1 39)"/>
+      <rect x="6" y="31" width="6" height="17" rx="3" transform="rotate(9 9 39)"/>
+      <rect x="-3" y="14" width="13" height="24" rx="6.5" transform="rotate(20 3 26)"/>
+      <circle cx="11" cy="9" r="7.5"/>
+      <rect x="7" y="14" width="5.5" height="20" rx="2.75" transform="rotate(46 10 16)"/>
+      <ellipse cx="11" cy="3" rx="10" ry="5.5" fill="#FFC107"/>
+      <rect x="0" y="3" width="22" height="3.6" rx="1.8" fill="#FFC107"/>
+      <rect x="18" y="12" width="4" height="34" rx="2" transform="rotate(33 20 29)" fill="#eef3f1"/>
+      <path d="M33 44 l9 5 -3 10 -9 -5 z" transform="rotate(33 36 50)" fill="#eef3f1"/>
+    </g>
+  </g>
+</svg>
