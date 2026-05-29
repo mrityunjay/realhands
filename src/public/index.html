@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RealHands — Find Work & Hire Workers on WhatsApp</title>
+  <meta name="description" content="RealHands connects skilled and daily-wage workers with employers across India — directly on WhatsApp. No app, no signup. Masons, electricians, plumbers, drivers, security guards & more." />
+  <style>
+    :root { --green:#075E54; --green2:#128C7E; --wa:#25D366; --ink:#1a1a1a; --muted:#667; --bg:#f6f8f7; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--ink); background: #fff; line-height: 1.55; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+    /* Nav */
+    nav { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid #eee; }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+    .logo { font-weight: 800; font-size: 21px; color: var(--green); display: flex; align-items: center; gap: 8px; }
+    .logo span.dot { color: var(--wa); }
+    nav a.cta { background: var(--wa); color: #fff; text-decoration: none; padding: 9px 16px; border-radius: 22px; font-weight: 600; font-size: 14px; }
+
+    /* Hero */
+    .hero { background: linear-gradient(160deg, #0b6b5f 0%, #075E54 60%, #064c44 100%); color: #fff; padding: 56px 0 64px; }
+    .hero h1 { font-size: 38px; line-height: 1.15; font-weight: 800; letter-spacing: -.5px; }
+    .hero .hi { display: block; font-size: 22px; font-weight: 600; opacity: .92; margin-bottom: 10px; }
+    .hero p.sub { font-size: 17px; opacity: .92; margin: 18px 0 8px; max-width: 620px; }
+    .hero .tag { display: inline-block; margin-top: 14px; font-size: 13px; background: rgba(255,255,255,.15); padding: 6px 14px; border-radius: 20px; }
+    .ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+    .btn { text-decoration: none; border-radius: 14px; padding: 18px 22px; font-weight: 700; font-size: 17px; display: flex; flex-direction: column; gap: 2px; min-width: 230px; transition: transform .12s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn small { font-weight: 500; font-size: 13px; opacity: .85; }
+    .btn.work { background: var(--wa); color: #fff; }
+    .btn.hire { background: #fff; color: var(--green); }
+    .btn .wa { font-size: 13px; opacity: .9; margin-top: 4px; }
+    .note { margin-top: 18px; font-size: 14px; opacity: .9; }
+    .note b { font-weight: 700; }
+
+    section { padding: 56px 0; }
+    section h2 { font-size: 27px; font-weight: 800; text-align: center; margin-bottom: 6px; letter-spacing: -.3px; }
+    section .lead { text-align: center; color: var(--muted); margin-bottom: 36px; }
+
+    /* How it works */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 20px; }
+    .step { background: var(--bg); border-radius: 16px; padding: 26px; text-align: center; }
+    .step .n { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 14px; }
+    .step .emoji { font-size: 30px; }
+    .step h3 { font-size: 17px; margin: 10px 0 6px; }
+    .step p { color: var(--muted); font-size: 14px; }
+
+    /* Trades */
+    .trades { background: var(--bg); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 14px; }
+    .trade { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 18px 14px; text-align: center; font-weight: 600; font-size: 15px; }
+    .trade .e { font-size: 28px; display: block; margin-bottom: 8px; }
+    .trade small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; }
+
+    /* Why */
+    .why { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 18px; }
+    .feat { padding: 22px; border-radius: 14px; border: 1px solid #eee; }
+    .feat .e { font-size: 26px; }
+    .feat h3 { font-size: 16px; margin: 10px 0 4px; }
+    .feat p { color: var(--muted); font-size: 14px; }
+
+    /* CTA band */
+    .band { background: var(--green); color: #fff; text-align: center; }
+    .band h2 { color: #fff; }
+    .band .ctas { justify-content: center; }
+    .band .lead { color: rgba(255,255,255,.85); }
+
+    footer { background: #08322d; color: #cfe; padding: 34px 0; font-size: 14px; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    footer a { color: #9fe; text-decoration: none; }
+    .city { display: inline-block; background: var(--bg); border-radius: 20px; padding: 6px 14px; margin: 4px; font-size: 14px; }
+    .city.soon { color: var(--muted); }
+
+    .stats { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 28px; }
+    .stats div { font-size: 14px; opacity: .92; }
+    .stats b { display: block; font-size: 26px; font-weight: 800; }
+    .fab { position: fixed; right: 18px; bottom: 18px; background: var(--wa); color: #fff; text-decoration: none; padding: 14px 20px; border-radius: 30px; font-weight: 700; box-shadow: 0 6px 22px rgba(0,0,0,.28); z-index: 60; display: flex; align-items: center; gap: 8px; }
+    .fab:hover { filter: brightness(1.05); }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 30px; }
+      .btn { min-width: 100%; }
+      .stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <div class="logo">👷 RealHands<span class="dot">.</span></div>
+      <a class="cta" href="https://wa.me/__WA_NUMBER__?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <span class="hi">काम ढूँढो • मज़दूर पाओ</span>
+      <h1>Find work. Hire workers.<br>All on WhatsApp.</h1>
+      <p class="sub">RealHands connects skilled &amp; daily-wage workers with employers across India — directly on WhatsApp. <b>No app. No signup. No fees.</b></p>
+      <span class="tag">💪 The work AI can't do — done by real human hands.</span>
+
+      <div class="ctas">
+        <a class="btn work" href="https://wa.me/__WA_NUMBER__?text=KAAM" target="_blank" rel="noopener">
+          💼 काम चाहिए
+          <small>Find Work (I'm a worker)</small>
+          <span class="wa">→ Opens WhatsApp</span>
+        </a>
+        <a class="btn hire" href="https://wa.me/__WA_NUMBER__?text=HIRE" target="_blank" rel="noopener">
+          👷 मज़दूर चाहिए
+          <small>Hire Workers (I'm an employer)</small>
+          <span class="wa">→ Opens WhatsApp</span>
+        </a>
+      </div>
+      <p class="note">Just tap a button → chat opens → reply with simple numbers. <b>That's it.</b></p>
+      <div class="stats">
+        <div><b>12</b>trades covered</div>
+        <div><b>100%</b>free to use</div>
+        <div><b>हिं/EN</b>two languages</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="lead">कैसे काम करता है — 3 आसान कदम</p>
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <div class="emoji">📱</div>
+          <h3>Message on WhatsApp</h3>
+          <p>Tap "Find Work" or "Hire Workers". A WhatsApp chat opens with our bot.</p>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <div class="emoji">🔢</div>
+          <h3>Reply with numbers</h3>
+          <p>Choose your trade, area and rate by tapping simple numbers — in Hindi or English.</p>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <div class="emoji">🤝</div>
+          <h3>Get connected</h3>
+          <p>We match workers and employers nearby and share phone numbers. Call &amp; start work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRADES -->
+  <section class="trades">
+    <div class="wrap">
+      <h2>Workers for every job</h2>
+      <p class="lead">हर तरह के कारीगर और मज़दूर</p>
+      <div class="grid">
+        <div class="trade"><span class="e">🧱</span>Mason<small>राजमिस्त्री</small></div>
+        <div class="trade"><span class="e">🔨</span>Carpenter<small>बढ़ई</small></div>
+        <div class="trade"><span class="e">⚡</span>Electrician<small>इलेक्ट्रीशियन</small></div>
+        <div class="trade"><span class="e">🔧</span>Plumber<small>प्लंबर</small></div>
+        <div class="trade"><span class="e">🏗️</span>Labour<small>लेबर</small></div>
+        <div class="trade"><span class="e">🚛</span>Driver<small>ड्राइवर</small></div>
+        <div class="trade"><span class="e">🎨</span>Painter<small>पेंटर</small></div>
+        <div class="trade"><span class="e">🧹</span>Cleaner<small>सफाई कर्मी</small></div>
+        <div class="trade"><span class="e">💂</span>Security<small>गार्ड</small></div>
+        <div class="trade"><span class="e">🌱</span>Gardener<small>माली</small></div>
+        <div class="trade"><span class="e">🍳</span>Cook / Maid<small>रसोइया / मेड</small></div>
+        <div class="trade"><span class="e">🔥</span>Welder<small>वेल्डर</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section>
+    <div class="wrap">
+      <h2>Why RealHands</h2>
+      <p class="lead">भरोसेमंद, मुफ़्त और आसान</p>
+      <div class="why">
+        <div class="feat"><div class="e">🆓</div><h3>Completely free</h3><p>No charges for workers or employers. Ever.</p></div>
+        <div class="feat"><div class="e">📍</div><h3>Nearby matches</h3><p>We find workers closest to your job location.</p></div>
+        <div class="feat"><div class="e">🗣️</div><h3>Hindi &amp; English</h3><p>Simple number-based chat anyone can use.</p></div>
+        <div class="feat"><div class="e">⚡</div><h3>Instant</h3><p>No app to download, no forms. Reply and you're done.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="band">
+    <div class="wrap">
+      <h2>Ready to start?</h2>
+      <p class="lead">अभी शुरू करें — बस एक WhatsApp message</p>
+      <div class="ctas">
+        <a class="btn work" href="https://wa.me/__WA_NUMBER__?text=KAAM" target="_blank" rel="noopener">💼 काम चाहिए<small>Find Work</small></a>
+        <a class="btn hire" href="https://wa.me/__WA_NUMBER__?text=HIRE" target="_blank" rel="noopener">👷 मज़दूर चाहिए<small>Hire Workers</small></a>
+      </div>
+      <p class="lead" style="margin-top:28px;">
+        <span class="city">📍 Hyderabad</span>
+        <span class="city soon">Bangalore — soon</span>
+        <span class="city soon">Chennai — soon</span>
+        <span class="city soon">Delhi — soon</span>
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <div class="logo" style="color:#fff;">👷 RealHands</div>
+        <p style="margin-top:6px;opacity:.8;">India's WhatsApp marketplace for real work.</p>
+      </div>
+      <div>
+        <a href="https://wa.me/__WA_NUMBER__?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a> &nbsp;·&nbsp;
+        <span style="opacity:.7;">© <span id="yr"></span> RealHands</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="fab" href="https://wa.me/__WA_NUMBER__?text=Hi" target="_blank" rel="noopener">💬 Chat</a>
+
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -5,94 +5,122 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RealHands Dashboard</title>
   <style>
+    :root { --green:#075E54; --green2:#128C7E; --wa:#25D366; --ink:#1a2b29; --muted:#6b7c79; --bg:#eef2f1; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a1a; }
-    header { background: #25D366; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
-    header h1 { font-size: 22px; font-weight: 700; }
-    header span { font-size: 13px; opacity: 0.85; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
-    .card .num { font-size: 36px; font-weight: 700; color: #25D366; }
-    .card .label { font-size: 13px; color: #666; margin-top: 4px; }
-    .section { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 24px; }
-    .section h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+    header { background: linear-gradient(135deg, var(--green2), var(--green)); color: #fff; padding: 18px 24px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    header .logo { width: 46px; height: 46px; border-radius: 12px; background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    header h1 { font-size: 21px; font-weight: 700; }
+    header .sub { font-size: 12px; opacity: .85; }
+    header .right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    header .right .live { font-size: 12px; background: rgba(255,255,255,.18); padding: 5px 12px; border-radius: 16px; }
+    header .right button { background: rgba(255,255,255,.2); color: #fff; border: none; padding: 7px 14px; border-radius: 16px; font-size: 13px; cursor: pointer; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 24px 16px 60px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .card { background: #fff; border-radius: 14px; padding: 20px 22px; box-shadow: 0 1px 4px rgba(0,0,0,.07); border-left: 4px solid var(--wa); display: flex; align-items: center; gap: 16px; }
+    .card .ic { font-size: 30px; }
+    .card .num { font-size: 32px; font-weight: 800; line-height: 1; }
+    .card .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .card.c1 { border-color: #25D366; } .card.c2 { border-color: #34b7f1; }
+    .card.c3 { border-color: #ffa000; } .card.c4 { border-color: #9c27b0; }
+
+    .section { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 1px 4px rgba(0,0,0,.07); margin-bottom: 22px; }
+    .section h2 { font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .refresh { margin-left: auto; font-size: 12px; color: var(--green2); cursor: pointer; font-weight: 600; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th { text-align: left; padding: 8px 12px; background: #f8f9fa; color: #555; font-weight: 600; border-bottom: 2px solid #e9ecef; }
-    td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+    th { text-align: left; padding: 9px 12px; background: #f7faf9; color: #5a6b68; font-weight: 600; border-bottom: 2px solid #e6edec; position: sticky; top: 0; }
+    td { padding: 11px 12px; border-bottom: 1px solid #f1f4f3; }
     tr:last-child td { border-bottom: none; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-    .badge.available { background: #d4edda; color: #155724; }
-    .badge.unavailable { background: #f8d7da; color: #721c24; }
-    .badge.open { background: #d1ecf1; color: #0c5460; }
-    .badge.filled { background: #d4edda; color: #155724; }
-    .skill-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .skill-bar .name { width: 140px; font-size: 13px; }
-    .skill-bar .bar { flex: 1; height: 16px; background: #e9ecef; border-radius: 8px; overflow: hidden; }
-    .skill-bar .fill { height: 100%; background: #25D366; border-radius: 8px; transition: width .4s; }
-    .skill-bar .count { width: 30px; text-align: right; font-size: 13px; font-weight: 600; color: #25D366; }
-    #login { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
-    #login .box { background: white; border-radius: 16px; padding: 32px; width: 320px; text-align: center; }
-    #login h2 { margin-bottom: 8px; }
-    #login p { color: #666; font-size: 13px; margin-bottom: 20px; }
-    #login input { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 12px; }
-    #login button { width: 100%; padding: 11px; background: #25D366; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
-    .refresh { float: right; font-size: 12px; color: #25D366; cursor: pointer; text-decoration: underline; }
-    .empty { text-align: center; padding: 32px; color: #aaa; font-size: 14px; }
+    tr:hover td { background: #fafdfc; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .badge.available { background: #d4f5e0; color: #0a7a3d; }
+    .badge.unavailable { background: #fde2e2; color: #9b2222; }
+    .badge.open { background: #d9eefd; color: #0b5a8c; }
+    .badge.filled { background: #d4f5e0; color: #0a7a3d; }
+    .skill-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+    .skill-bar .name { width: 170px; font-size: 13px; font-weight: 500; }
+    .skill-bar .bar { flex: 1; height: 18px; background: #eef2f1; border-radius: 9px; overflow: hidden; }
+    .skill-bar .fill { height: 100%; background: linear-gradient(90deg, var(--green2), var(--wa)); border-radius: 9px; transition: width .5s; }
+    .skill-bar .count { width: 34px; text-align: right; font-size: 14px; font-weight: 700; color: var(--green2); }
+    .empty { text-align: center; padding: 30px; color: #9aa; font-size: 14px; }
+
+    #login { position: fixed; inset: 0; background: linear-gradient(135deg, var(--green2), var(--green)); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    #login .box { background: #fff; border-radius: 18px; padding: 34px; width: 330px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+    #login .lg { font-size: 40px; }
+    #login h2 { margin: 8px 0; font-size: 20px; }
+    #login p { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+    #login input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; margin-bottom: 12px; }
+    #login button { width: 100%; padding: 12px; background: var(--wa); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
 
 <div id="login">
   <div class="box">
-    <h2>🔐 RealHands</h2>
-    <p>Enter dashboard password to continue</p>
+    <div class="lg">👷</div>
+    <h2>RealHands Admin</h2>
+    <p>Enter dashboard password</p>
     <input type="password" id="pwd" placeholder="Password" onkeydown="if(event.key==='Enter') login()" />
     <button onclick="login()">Login</button>
-    <p id="loginErr" style="color:red;font-size:12px;margin-top:8px;"></p>
+    <p id="loginErr" style="color:#d33;font-size:12px;margin-top:8px;"></p>
   </div>
 </div>
 
 <header>
-  <span style="font-size:28px;">👷</span>
+  <div class="logo">👷</div>
   <div>
     <h1>RealHands Dashboard</h1>
-    <span>Hyderabad Labor Marketplace</span>
+    <div class="sub">Admin · Hyderabad Labor Marketplace</div>
+  </div>
+  <div class="right">
+    <span class="live">🟢 Live · auto-refresh 60s</span>
+    <button onclick="loadData()">↻ Refresh</button>
   </div>
 </header>
 
 <div class="container">
   <div class="cards">
-    <div class="card"><div class="num" id="totalWorkers">—</div><div class="label">Total Workers</div></div>
-    <div class="card"><div class="num" id="activeToday">—</div><div class="label">Available Today</div></div>
-    <div class="card"><div class="num" id="totalJobs">—</div><div class="label">Job Requests</div></div>
-    <div class="card"><div class="num" id="lastUpdated">—</div><div class="label">Last Refreshed</div></div>
+    <div class="card c1"><div class="ic">👷</div><div><div class="num" id="totalWorkers">—</div><div class="label">Total Workers</div></div></div>
+    <div class="card c2"><div class="ic">✅</div><div><div class="num" id="activeToday">—</div><div class="label">Available Today</div></div></div>
+    <div class="card c3"><div class="ic">💼</div><div><div class="num" id="totalJobs">—</div><div class="label">Job Requests</div></div></div>
+    <div class="card c4"><div class="ic">🕒</div><div><div class="num" id="lastUpdated" style="font-size:18px;">—</div><div class="label">Last Refreshed</div></div></div>
   </div>
 
   <div class="section">
-    <h2>Workers by Skill <span class="refresh" onclick="loadData()">↻ Refresh</span></h2>
-    <div id="skillBars"><div class="empty">Loading...</div></div>
+    <h2>📊 Workers by Trade <span class="refresh" onclick="loadData()">↻ Refresh</span></h2>
+    <div id="skillBars"><div class="empty">Loading…</div></div>
   </div>
 
   <div class="section">
-    <h2>Available Workers</h2>
+    <h2>👷 Registered Workers</h2>
     <table>
-      <thead><tr><th>Name</th><th>Skill</th><th>Experience</th><th>Wage/Day</th><th>Location</th><th>Status</th></tr></thead>
-      <tbody id="workerTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+      <thead><tr><th>Name</th><th>Trade</th><th>Experience</th><th>Wage/Day</th><th>Location</th><th>Status</th></tr></thead>
+      <tbody id="workerTable"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
     </table>
   </div>
 
   <div class="section">
-    <h2>Recent Job Requests</h2>
+    <h2>💼 Recent Job Requests</h2>
     <table>
-      <thead><tr><th>Skill Needed</th><th>Location</th><th>Workers Needed</th><th>Start Date</th><th>Status</th><th>Posted</th></tr></thead>
-      <tbody id="jobTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+      <thead><tr><th>Trade Needed</th><th>Location</th><th>Workers</th><th>Start</th><th>Status</th><th>Posted</th></tr></thead>
+      <tbody id="jobTable"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
     </table>
   </div>
 </div>
 
 <script>
   let apiKey = '';
+
+  // Friendly labels shared across the dashboard.
+  const SKILL = {
+    mason:'🧱 Mason', carpenter:'🔨 Carpenter', electrician:'⚡ Electrician', plumber:'🔧 Plumber',
+    labour:'🏗️ Labour', driver:'🚛 Driver', painter:'🎨 Painter', cleaner:'🧹 Cleaner',
+    security:'💂 Security', gardener:'🌱 Gardener', cook_maid:'🍳 Cook/Maid', welder:'🔥 Welder'
+  };
+  const EXP = { lt1:'< 1 yr', '1to3':'1–3 yrs', '3to7':'3–7 yrs', '7plus':'7+ yrs' };
+  const skillLabel = c => SKILL[c] || ('👷 ' + (c || '—'));
+  const expLabel = c => EXP[c] || (c || '—');
 
   function login() {
     apiKey = document.getElementById('pwd').value.trim();
@@ -102,10 +130,11 @@
   }
 
   async function loadData() {
+    if (!apiKey) return;
     try {
       const [statsRes, workersRes] = await Promise.all([
-        fetch(`/api/stats?key=${apiKey}`),
-        fetch(`/api/workers?key=${apiKey}`),
+        fetch(`/api/stats?key=${encodeURIComponent(apiKey)}`),
+        fetch(`/api/workers?key=${encodeURIComponent(apiKey)}`),
       ]);
 
       if (statsRes.status === 401 || workersRes.status === 401) {
@@ -117,41 +146,35 @@
       const { stats, recentJobs } = await statsRes.json();
       const { workers } = await workersRes.json();
 
-      // Summary cards
       document.getElementById('totalWorkers').textContent = stats.total;
       document.getElementById('activeToday').textContent = stats.available;
       document.getElementById('totalJobs').textContent = recentJobs.length;
-      document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString('en-IN');
+      document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
 
-      // Skill bars
       const maxCount = Math.max(...stats.bySkill.map(s => s.count), 1);
-      const skillEmoji = { mason:'🧱', carpenter:'🔨', electrician:'⚡', plumber:'🔧', labour:'🏗️', driver:'🚛', painter:'🎨', cleaner:'🧹' };
       document.getElementById('skillBars').innerHTML = stats.bySkill.map(s => `
         <div class="skill-bar">
-          <div class="name">${skillEmoji[s.skill] || '👷'} ${s.skill}</div>
+          <div class="name">${skillLabel(s.skill)}</div>
           <div class="bar"><div class="fill" style="width:${(s.count/maxCount)*100}%"></div></div>
           <div class="count">${s.count}</div>
-        </div>
-      `).join('') || '<div class="empty">No workers yet</div>';
+        </div>`).join('') || '<div class="empty">No workers yet</div>';
 
-      // Worker table
       document.getElementById('workerTable').innerHTML = workers.length
         ? workers.map(w => `
             <tr>
               <td><strong>${w.name}</strong></td>
-              <td>${w.skill}</td>
-              <td>${w.experience}</td>
+              <td>${skillLabel(w.skill)}</td>
+              <td>${expLabel(w.experience)}</td>
               <td>₹${w.wage_min}–${w.wage_max}</td>
               <td>${w.city || 'Hyderabad'}</td>
               <td><span class="badge ${w.available ? 'available' : 'unavailable'}">${w.available ? 'Available' : 'Busy'}</span></td>
             </tr>`).join('')
         : '<tr><td colspan="6" class="empty">No workers registered yet</td></tr>';
 
-      // Job table
       document.getElementById('jobTable').innerHTML = recentJobs.length
         ? recentJobs.map(j => `
             <tr>
-              <td>${j.skill_needed}</td>
+              <td>${skillLabel(j.skill_needed)}</td>
               <td>${j.address || 'Hyderabad'}</td>
               <td>${j.workers_needed}</td>
               <td>${j.start_date}</td>
@@ -165,7 +188,6 @@
     }
   }
 
-  // Auto-refresh every 60 seconds
   setInterval(loadData, 60000);
 </script>
 </body>

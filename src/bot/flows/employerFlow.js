@@ -15,7 +15,7 @@ async function handleEmployerFlow(phone, text, session) {
   if (step === 'employer_skill') {
     const skill = SKILLS[text.trim()];
     if (!skill) {
-      await sendMessage(phone, msg.askSkillNeeded(lang));
+      await sendMessage(phone, msg.pickNumber(lang) + '\n\n' + msg.askSkillNeeded(lang));
       return;
     }
     updateData(phone, { skillNeeded: skill.code, skillLabel: lang === 'en' ? skill.en : skill.hi });
@@ -28,7 +28,7 @@ async function handleEmployerFlow(phone, text, session) {
   if (step === 'employer_count') {
     const count = WORKER_COUNT[text.trim()];
     if (!count) {
-      await sendMessage(phone, msg.askWorkerCount(lang));
+      await sendMessage(phone, msg.pickNumber(lang) + '\n\n' + msg.askWorkerCount(lang));
       return;
     }
     updateData(phone, { workersNeeded: count });

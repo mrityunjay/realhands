@@ -78,38 +78,65 @@ async function handleIncomingMessage(phone, messageData) {
 
     // ── No session → Welcome ─────────────────────────────────────────────────
     if (!session) {
-      // Check if already registered worker messaging
       const existingWorker = getWorkerByPhone(phone);
-      if (existingWorker && !EMPLOYER_TRIGGERS.some(t => upper.includes(t))) {
+      const isEmployerTrigger = EMPLOYER_TRIGGERS.some(t => upper.includes(t));
+      const isWorkerTrigger = WORKER_TRIGGERS.some(t => upper === t || upper.startsWith(t + ' '));
+
+      // Already-registered worker messaging (unless they want to hire)
+      if (existingWorker && !isEmployerTrigger) {
         await sendMessage(phone, msg.alreadyRegistered(existingWorker.language || 'hi', existingWorker));
         setSession(phone, { type: 'worker', step: 'registered', language: existingWorker.language || 'hi', data: {} });
         return;
       }
 
+      // Remember KAAM/HIRE intent so we skip the role question after language.
+      const pendingType = isEmployerTrigger ? 'employer' : isWorkerTrigger ? 'worker' : null;
       await sendMessage(phone, msg.welcome());
-      setSession(phone, { step: 'select_language' });
+      setSession(phone, { step: 'select_language', pendingType });
       return;
     }
 
     // ── Language selection ────────────────────────────────────────────────────
     if (session.step === 'select_language') {
       const lang = rawText === '2' ? 'en' : 'hi';
+
+      // If they opened with KAAM/HIRE, go straight into that flow.
+      if (session.pendingType === 'employer') {
+        setSession(phone, { step: 'employer_skill', type: 'employer', language: lang, pendingType: null });
+        await sendMessage(phone, msg.askSkillNeeded(lang));
+        return;
+      }
+      if (session.pendingType === 'worker') {
+        const existingWorker = getWorkerByPhone(phone);
+        if (existingWorker) {
+          await sendMessage(phone, msg.alreadyRegistered(lang, existingWorker));
+          setSession(phone, { type: 'worker', step: 'registered', language: existingWorker.language || lang, data: {} });
+          return;
+        }
+        setSession(phone, { step: 'worker_name', type: 'worker', language: lang, pendingType: null });
+        await sendMessage(phone, msg.askName(lang));
+        return;
+      }
+
       setSession(phone, { step: 'select_role', language: lang });
       await sendMessage(phone, msg.askRole(lang));
       return;
     }
 
-    // ── Role selection ────────────────────────────────────────────────────────
+    // ── Role selection (accepts 1/2 and common words; guides on anything else) ──
     if (session.step === 'select_role') {
       const lang = session.language;
-      if (rawText === '1') {
-        setSession(phone, { step: 'worker_name', type: 'worker' });
-        await sendMessage(phone, msg.askName(lang));
-      } else if (rawText === '2') {
+      const wantsHire = rawText === '2' || /chahiye|चाहिए|\bhire\b/i.test(rawText);
+      const wantsWork = rawText === '1' || /\b(work|job|kaam|naukri|majdoor|mazdoor)\b/i.test(rawText) || /काम|मज़दूर|नौकरी/.test(rawText);
+
+      if (wantsHire) {
         setSession(phone, { step: 'employer_skill', type: 'employer' });
         await sendMessage(phone, msg.askSkillNeeded(lang));
+      } else if (wantsWork) {
+        setSession(phone, { step: 'worker_name', type: 'worker' });
+        await sendMessage(phone, msg.askName(lang));
       } else {
-        await sendMessage(phone, msg.askRole(lang));
+        await sendMessage(phone, msg.pickNumber(lang) + '\n\n' + msg.askRole(lang));
       }
       return;
     }

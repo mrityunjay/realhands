@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RealHands — Practice Chat</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #d9dbd5; height: 100vh; display: flex; flex-direction: column; }
+    header { background: #075E54; color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+    header .avatar { width: 42px; height: 42px; border-radius: 50%; background: #128C7E; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    header h1 { font-size: 17px; font-weight: 600; }
+    header .sub { font-size: 12px; opacity: .85; }
+    header .restart { margin-left: auto; background: rgba(255,255,255,.2); color: #fff; border: none; padding: 7px 12px; border-radius: 16px; font-size: 12px; cursor: pointer; }
+    .banner { background: #fff8e1; color: #8a6d3b; font-size: 12px; text-align: center; padding: 6px 12px; border-bottom: 1px solid #f0e6c0; }
+    #chat { flex: 1; overflow-y: auto; padding: 16px; background: #e5ddd5; display: flex; flex-direction: column; gap: 6px; }
+    .msg { max-width: 80%; padding: 8px 12px; border-radius: 8px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; word-wrap: break-word; box-shadow: 0 1px 1px rgba(0,0,0,.12); }
+    .msg.user { align-self: flex-end; background: #dcf8c6; border-top-right-radius: 2px; }
+    .msg.bot  { align-self: flex-start; background: #fff; border-top-left-radius: 2px; }
+    .msg .time { display: block; font-size: 10px; color: #999; text-align: right; margin-top: 2px; }
+    .nums { background: #ededed; padding: 8px 10px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; border-top: 1px solid #ddd; }
+    .nums button { width: 40px; height: 36px; border: 1px solid #bbb; border-radius: 8px; background: #fff; font-size: 15px; font-weight: 600; cursor: pointer; color: #075E54; }
+    .nums button:hover { background: #f0f0f0; }
+    .nums .loc { width: auto; padding: 0 12px; font-weight: 500; }
+    .composer { display: flex; gap: 8px; padding: 10px 12px; background: #f0f0f0; }
+    .composer input { flex: 1; padding: 12px 16px; border: none; border-radius: 24px; font-size: 15px; outline: none; }
+    .composer button { padding: 12px 20px; border: none; border-radius: 24px; background: #075E54; color: #fff; font-size: 15px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="avatar">👷</div>
+    <div>
+      <h1>RealHands</h1>
+      <div class="sub">practice chat · online</div>
+    </div>
+    <button class="restart" onclick="startOver()">🔄 Start over</button>
+  </header>
+
+  <div class="banner">This is a practice WhatsApp chat to test your bot. Just reply like you would on WhatsApp.</div>
+
+  <div id="chat"></div>
+
+  <div class="nums" id="nums">
+    <button class="loc" onclick="shareLoc()">📍 Share location</button>
+  </div>
+
+  <div class="composer">
+    <input id="input" placeholder="Type your reply…" onkeydown="if(event.key==='Enter')send()" autocomplete="off" />
+    <button onclick="send()">Send</button>
+  </div>
+
+  <script>
+    // Fixed sandbox number — hidden from the user, just identifies this chat to the bot.
+    const PHONE = '910000000001';
+    const chat = document.getElementById('chat');
+    const inputEl = document.getElementById('input');
+
+    function bubble(text, who) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + who;
+      const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = String(text).replace(/</g, '&lt;') + '<span class="time">' + t + '</span>';
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function api(path, body) {
+      const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      return r.json();
+    }
+
+    async function botReplies(payload) {
+      const d = await api('/sim/message', { phone: PHONE, ...payload });
+      if (d.error) { bubble('⚠️ ' + d.error, 'bot'); return; }
+      (d.replies || []).forEach(r => bubble(r, 'bot'));
+    }
+
+    async function send() {
+      const t = inputEl.value.trim();
+      if (!t) return;
+      bubble(t, 'user');
+      inputEl.value = '';
+      await botReplies({ text: t });
+    }
+
+    async function tap(n) {
+      bubble(n, 'user');
+      await botReplies({ text: n });
+    }
+
+    async function shareLoc() {
+      bubble('📍 My location (Hyderabad)', 'user');
+      await botReplies({ location: { latitude: 17.385, longitude: 78.4867, name: 'Hyderabad' } });
+    }
+
+    async function startOver() {
+      chat.innerHTML = '';
+      await api('/sim/reset', { phone: PHONE, wipe: true });
+      await botReplies({ text: 'hi' });   // triggers the bot's welcome message
+      inputEl.focus();
+    }
+
+    // Build number buttons 1–12 (job menu now has 12 trades).
+    const numsEl = document.getElementById('nums');
+    const locBtn = numsEl.querySelector('.loc');
+    for (let i = 1; i <= 12; i++) {
+      const b = document.createElement('button');
+      b.textContent = i;
+      b.onclick = () => tap(String(i));
+      numsEl.insertBefore(b, locBtn);
+    }
+
+    // Auto-start the conversation when the page opens.
+    window.addEventListener('load', startOver);
+  </script>
+</body>
+</html>

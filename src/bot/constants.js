@@ -7,6 +7,10 @@ const SKILLS = {
   '6': { hi: 'ड्राइवर',     en: 'Driver',         code: 'driver', emoji: '🚛' },
   '7': { hi: 'पेंटर',       en: 'Painter',         code: 'painter', emoji: '🎨' },
   '8': { hi: 'सफाई कर्मी',  en: 'Cleaner',         code: 'cleaner', emoji: '🧹' },
+  '9':  { hi: 'सिक्योरिटी गार्ड', en: 'Security Guard', code: 'security', emoji: '💂' },
+  '10': { hi: 'माली',           en: 'Gardener',       code: 'gardener', emoji: '🌱' },
+  '11': { hi: 'रसोइया / मेड',    en: 'Cook / Maid',    code: 'cook_maid', emoji: '🍳' },
+  '12': { hi: 'वेल्डर',         en: 'Welder',         code: 'welder', emoji: '🔥' },
 };
 
 const EXPERIENCE = {

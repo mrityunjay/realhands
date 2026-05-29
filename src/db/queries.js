@@ -18,6 +18,13 @@ function getWorkerByPhone(phone) {
   return getDb().prepare('SELECT * FROM workers WHERE phone = ?').get(phone);
 }
 
+// Test helper: remove a worker and their job requests so registration can be re-run.
+function deleteWorkerByPhone(phone) {
+  const db = getDb();
+  db.prepare('DELETE FROM job_requests WHERE worker_phone = ?').run(phone);
+  db.prepare('DELETE FROM workers WHERE phone = ?').run(phone);
+}
+
 function setWorkerAvailability(phone, available) {
   getDb().prepare(`
     UPDATE workers SET available = ?, last_active = datetime('now') WHERE phone = ?
@@ -133,7 +140,7 @@ function getRecentJobs(limit = 20) {
 }
 
 module.exports = {
-  createWorker, getWorkerByPhone, setWorkerAvailability,
+  createWorker, getWorkerByPhone, deleteWorkerByPhone, setWorkerAvailability,
   getAllActiveWorkers, findNearbyWorkers, findWorkersByCity, getWorkerStats,
   upsertEmployer, createJob, createJobRequest, updateJobRequestStatus,
   getPendingRequestForWorker, saveRating, getWorkerAvgRating, getRecentJobs,

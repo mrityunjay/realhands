@@ -14,7 +14,7 @@ async function handleWorkerFlow(phone, text, session) {
   if (step === 'worker_name') {
     const name = text.trim();
     if (name.length < 2) {
-      await sendMessage(phone, msg.askName(lang));
+      await sendMessage(phone, msg.nameHint(lang));
       return;
     }
     updateData(phone, { name });
@@ -27,7 +27,7 @@ async function handleWorkerFlow(phone, text, session) {
   if (step === 'worker_skill') {
     const skill = SKILLS[text.trim()];
     if (!skill) {
-      await sendMessage(phone, msg.askSkill(lang));
+      await sendMessage(phone, msg.pickNumber(lang) + '\n\n' + msg.askSkill(lang));
       return;
     }
     updateData(phone, { skill: skill.code, skillLabel: lang === 'en' ? skill.en : skill.hi });
@@ -40,7 +40,7 @@ async function handleWorkerFlow(phone, text, session) {
   if (step === 'worker_experience') {
     const exp = EXPERIENCE[text.trim()];
     if (!exp) {
-      await sendMessage(phone, msg.askExperience(lang));
+      await sendMessage(phone, msg.pickNumber(lang) + '\n\n' + msg.askExperience(lang));
       return;
     }
     updateData(phone, { experience: exp.code, expLabel: lang === 'en' ? exp.en : exp.hi });
@@ -64,7 +64,7 @@ async function handleWorkerFlow(phone, text, session) {
   if (step === 'worker_wage') {
     const wage = WAGES[text.trim()];
     if (!wage) {
-      await sendMessage(phone, msg.askWage(lang));
+      await sendMessage(phone, msg.pickNumber(lang) + '\n\n' + msg.askWage(lang));
       return;
     }
     updateData(phone, { wageMin: wage.min, wageMax: wage.max, wageLabel: lang === 'en' ? wage.en : wage.hi });
@@ -77,7 +77,7 @@ async function handleWorkerFlow(phone, text, session) {
   if (step === 'worker_availability') {
     const choice = text.trim();
     if (!['1', '2', '3'].includes(choice)) {
-      await sendMessage(phone, msg.askAvailability(lang));
+      await sendMessage(phone, msg.pickNumber(lang) + '\n\n' + msg.askAvailability(lang));
       return;
     }
     const available = choice !== '3';

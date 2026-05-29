@@ -7,8 +7,9 @@ function t(lang, hi, en) {
 }
 
 function skillListText(lang) {
+  // Plain bold numbers (not keycap emoji) so 2-digit options (10, 11, 12) render cleanly.
   return Object.entries(SKILLS)
-    .map(([k, v]) => `${k}️⃣ ${v.emoji} ${lang === 'en' ? v.en : v.hi}`)
+    .map(([k, v]) => `*${k}.* ${v.emoji} ${lang === 'en' ? v.en : v.hi}`)
     .join('\n');
 }
 
@@ -260,6 +261,20 @@ function invalidOption(lang) {
   );
 }
 
+function pickNumber(lang) {
+  return t(lang,
+    `❓ Kripya niche di gayi list mein se ek *number* bhejein 👇`,
+    `❓ Please reply with one of the *numbers* from the list below 👇`
+  );
+}
+
+function nameHint(lang) {
+  return t(lang,
+    `❓ Kripya apna naam likhein (kam se kam 2 akshar):`,
+    `❓ Please type your name (at least 2 letters):`
+  );
+}
+
 function helpText(lang) {
   return t(lang,
     `ℹ️ *RealHands Help*\n\n• Kaam ke liye: KAAM likhein\n• Hire ke liye: HIRE likhein\n• Availability: AVAILABLE likhein\n• Nayi shuruat: RESTART likhein`,
@@ -280,5 +295,5 @@ module.exports = {
   askStartDate, askJobLocation, searchingWorkers, noWorkersFound,
   showWorkerResults, workerRequestSent, jobOfferToWorker, workerAccepted,
   workerDeclined, dailyPing, availabilityConfirmed, unavailabilityConfirmed,
-  askRating, ratingConfirmed, invalidOption, helpText, alreadyRegistered,
+  askRating, ratingConfirmed, invalidOption, pickNumber, nameHint, helpText, alreadyRegistered,
 };
