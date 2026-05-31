@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Workers — RealHands</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root { --green:#075E54; --green2:#128C7E; --wa:#25D366; --ink:#1a2b29; --muted:#6b7c79; --bg:#eef2f1; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+    header { background: linear-gradient(135deg, var(--green2), var(--green)); color: #fff; padding: 14px 18px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 20; }
+    header img { width: 38px; height: 38px; }
+    header h1 { font-size: 17px; } header .sub { font-size: 11px; opacity: .85; }
+    header a.home { margin-left: auto; color: #fff; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.18); padding: 7px 12px; border-radius: 16px; }
+    .searchbar { background: #fff; padding: 12px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); position: sticky; top: 66px; z-index: 15; }
+    .searchbar input { width: 100%; padding: 11px 14px; border: 1px solid #d6dedc; border-radius: 10px; font-size: 15px; }
+    .chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; -webkit-overflow-scrolling: touch; }
+    .chip { white-space: nowrap; padding: 8px 14px; border-radius: 18px; background: #fff; border: 1px solid #d6dedc; font-size: 13px; cursor: pointer; color: var(--ink); }
+    .chip.active { background: var(--green); color: #fff; border-color: var(--green); }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 4px 16px 40px; }
+    .count { color: var(--muted); font-size: 13px; margin: 6px 2px 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 14px; }
+    .wcard { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 1px 5px rgba(0,0,0,.07); display: flex; flex-direction: column; gap: 10px; }
+    .wtop { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg,var(--green2),var(--green)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+    .wname { font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 6px; }
+    .verified { color: #1d9bf0; font-size: 14px; }
+    .wtrade { color: var(--muted); font-size: 13px; }
+    .stars { color: #ff9800; font-size: 13px; font-weight: 600; }
+    .stars span { color: var(--muted); font-weight: 400; }
+    .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { background: var(--bg); border-radius: 8px; padding: 4px 10px; font-size: 12px; color: #44514f; }
+    .tag.avail { background: #d4f5e0; color: #0a7a3d; font-weight: 600; }
+    .tag.wage { background: #fff3d6; color: #8a6d1b; font-weight: 600; }
+    .contact { margin-top: 4px; background: var(--wa); color: #fff; text-decoration: none; text-align: center; padding: 11px; border-radius: 10px; font-weight: 700; font-size: 14px; }
+    .demo { background: #fff8e1; color: #8a6d3b; font-size: 12px; text-align: center; padding: 8px; }
+    .empty { text-align: center; color: var(--muted); padding: 40px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="/logo-mark.svg" alt="RealHands" />
+    <div><h1>Browse Workers</h1><div class="sub">श्रमिक खोजें · Hyderabad</div></div>
+    <a class="home" href="index.html">← Home</a>
+  </header>
+
+  <div class="demo">⭐ Sample profiles — these become real registered workers once your database is connected.</div>
+
+  <div class="searchbar">
+    <input id="search" placeholder="🔍 Search by name, trade or area…" oninput="render()" />
+  </div>
+  <div class="chips" id="chips"></div>
+
+  <div class="wrap">
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <script>
+    const WA_NUMBER = '__WA_NUMBER__';
+    const TRADES = ['All','Mason','Electrician','Plumber','Carpenter','Driver','Painter','Cleaner','Security','Gardener','Cook/Maid','Welder'];
+    const EMOJI = { Mason:'🧱', Electrician:'⚡', Plumber:'🔧', Carpenter:'🔨', Driver:'🚛', Painter:'🎨', Cleaner:'🧹', Security:'💂', Gardener:'🌱', 'Cook/Maid':'🍳', Welder:'🔥' };
+
+    // Sample workers (replaced by real data once the database is live)
+    const WORKERS = [
+      { name:'Ramesh Kumar', trade:'Mason', rating:4.8, jobs:62, exp:'5 yrs', area:'Kukatpally', wage:'₹700–900', verified:true, available:true },
+      { name:'Suresh Yadav', trade:'Electrician', rating:4.6, jobs:48, exp:'7 yrs', area:'Ameerpet', wage:'₹900–1200', verified:true, available:false },
+      { name:'Lakshmi Devi', trade:'Cook/Maid', rating:4.9, jobs:80, exp:'6 yrs', area:'Madhapur', wage:'₹600–800', verified:true, available:true },
+      { name:'Imran Khan', trade:'Plumber', rating:4.7, jobs:39, exp:'6 yrs', area:'Mehdipatnam', wage:'₹700–900', verified:false, available:true },
+      { name:'Venkat Rao', trade:'Carpenter', rating:4.5, jobs:55, exp:'8 yrs', area:'LB Nagar', wage:'₹900–1200', verified:true, available:false },
+      { name:'Ravi Teja', trade:'Driver', rating:4.4, jobs:27, exp:'4 yrs', area:'Secunderabad', wage:'₹600–800', verified:false, available:true },
+      { name:'Anil Kumar', trade:'Painter', rating:4.6, jobs:44, exp:'5 yrs', area:'KPHB', wage:'₹700–900', verified:true, available:true },
+      { name:'Mahesh Singh', trade:'Security', rating:4.3, jobs:18, exp:'2 yrs', area:'Hitech City', wage:'₹500–700', verified:false, available:true },
+      { name:'Krishna M', trade:'Welder', rating:4.7, jobs:51, exp:'9 yrs', area:'Balanagar', wage:'₹900–1200', verified:true, available:false },
+      { name:'Sunita Bai', trade:'Cleaner', rating:4.8, jobs:66, exp:'4 yrs', area:'Gachibowli', wage:'₹500–700', verified:true, available:true },
+      { name:'Gopal Reddy', trade:'Gardener', rating:4.5, jobs:22, exp:'3 yrs', area:'Jubilee Hills', wage:'₹500–700', verified:false, available:true },
+      { name:'Farhan Ali', trade:'Electrician', rating:4.9, jobs:73, exp:'10 yrs', area:'Tolichowki', wage:'₹900–1200', verified:true, available:true },
+    ];
+
+    let activeTrade = 'All';
+
+    function stars(r) {
+      const full = Math.round(r);
+      return '★'.repeat(full) + '☆'.repeat(5 - full);
+    }
+
+    function chipsHtml() {
+      document.getElementById('chips').innerHTML = TRADES.map(t =>
+        `<div class="chip ${t===activeTrade?'active':''}" onclick="setTrade('${t}')">${t==='All'?'All':((EMOJI[t]||'')+' '+t)}</div>`
+      ).join('');
+    }
+    function setTrade(t){ activeTrade = t; chipsHtml(); render(); }
+
+    function render() {
+      const q = document.getElementById('search').value.trim().toLowerCase();
+      const list = WORKERS.filter(w => {
+        const matchTrade = activeTrade==='All' || w.trade===activeTrade;
+        const matchQ = !q || (w.name+' '+w.trade+' '+w.area).toLowerCase().includes(q);
+        return matchTrade && matchQ;
+      });
+      document.getElementById('count').textContent = `${list.length} worker${list.length!==1?'s':''} found`;
+      document.getElementById('grid').innerHTML = list.length ? list.map(w => {
+        const initials = w.name.split(' ').map(s=>s[0]).slice(0,2).join('');
+        const waMsg = encodeURIComponent(`Hi, I want to hire ${w.name} (${w.trade}) from RealHands.`);
+        return `
+          <div class="wcard">
+            <div class="wtop">
+              <div class="avatar">${EMOJI[w.trade]||initials}</div>
+              <div>
+                <div class="wname">${w.name} ${w.verified?'<span class="verified" title="Verified">✔️</span>':''}</div>
+                <div class="wtrade">${EMOJI[w.trade]||''} ${w.trade} · ${w.exp}</div>
+                <div class="stars">${stars(w.rating)} <span>${w.rating} (${w.jobs} jobs)</span></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="tag">📍 ${w.area}</span>
+              <span class="tag wage">${w.wage}/day</span>
+              ${w.available?'<span class="tag avail">🟢 Available</span>':'<span class="tag">⚪ Busy</span>'}
+            </div>
+            <a class="contact" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">💬 Contact on WhatsApp</a>
+          </div>`;
+      }).join('') : '<div class="empty">No workers match your search.</div>';
+    }
+
+    // init
+    const params = new URLSearchParams(location.search);
+    if (params.get('trade')) activeTrade = params.get('trade');
+    if (params.get('q')) document.getElementById('search').value = params.get('q');
+    chipsHtml(); render();
+  </script>
+</body>
+</html>

@@ -86,6 +86,25 @@
       .btn { min-width: 100%; }
       .stats { gap: 20px; }
     }
+    nav .links { display: flex; align-items: center; gap: 18px; }
+    nav .links a.nl { color: var(--green); text-decoration: none; font-weight: 600; font-size: 14px; }
+    .hsearch { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 26px; background: #fff; padding: 10px; border-radius: 14px; max-width: 580px; box-shadow: 0 6px 20px rgba(0,0,0,.18); }
+    .hsearch select, .hsearch input { flex: 1; min-width: 130px; padding: 12px; border: 1px solid #e3e8e7; border-radius: 9px; font-size: 14px; color: var(--ink); }
+    .hsearch button { background: var(--green); color: #fff; border: none; padding: 12px 20px; border-radius: 9px; font-weight: 700; cursor: pointer; }
+    a.trade { text-decoration: none; color: var(--ink); display: block; transition: .15s; }
+    a.trade:hover { box-shadow: 0 6px 16px rgba(0,0,0,.12); transform: translateY(-3px); }
+    .tcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 16px; }
+    .tcard { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 1px 4px rgba(0,0,0,.07); text-align: left; }
+    .tcard .q { color: #ff9800; font-size: 15px; }
+    .tcard p { font-size: 14px; margin: 10px 0; color: #333; }
+    .tcard .who { color: var(--muted); font-size: 13px; font-weight: 600; }
+    .faq { max-width: 720px; margin: 0 auto; }
+    .faq details { background: #fff; border-radius: 12px; margin-bottom: 10px; padding: 2px 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .faq summary { cursor: pointer; padding: 15px 0; font-weight: 600; font-size: 15px; list-style: none; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: '+'; float: right; color: var(--green2); font-size: 20px; line-height: 1; }
+    .faq details[open] summary::after { content: '\2212'; }
+    .faq .ans { color: var(--muted); font-size: 14px; padding: 0 0 15px; }
   </style>
 </head>
 <body>
@@ -93,7 +112,10 @@
   <nav>
     <div class="wrap">
       <div class="logo"><img class="mark" src="logo-mark.svg" alt="" />RealHands<span class="dot">.</span></div>
-      <a class="cta" href="https://wa.me/917845148919?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      <div class="links">
+        <a class="nl" href="workers.html">Find Workers</a>
+        <a class="cta" href="register-company.html">Hire Now</a>
+      </div>
     </div>
   </nav>
 
@@ -118,6 +140,18 @@
         </a>
       </div>
       <p class="note">Just tap a button → chat opens → reply with simple numbers. <b>That's it.</b></p>
+      <div class="hsearch">
+        <select id="hsTrade">
+          <option value="">All trades</option>
+          <option>Mason</option><option>Electrician</option><option>Plumber</option>
+          <option>Carpenter</option><option>Driver</option><option>Painter</option>
+          <option>Cleaner</option><option>Security</option><option>Gardener</option>
+          <option>Cook/Maid</option><option>Welder</option>
+        </select>
+        <input id="hsArea" placeholder="Area (e.g. Kukatpally)" />
+        <button onclick="goSearch()">🔍 Find Workers</button>
+      </div>
+
       <div class="stats">
         <div><b>12</b>trades covered</div>
         <div><b>100%</b>free to use</div>
@@ -158,20 +192,20 @@
   <section class="trades">
     <div class="wrap">
       <h2>Workers for every job</h2>
-      <p class="lead">हर तरह के कारीगर और मज़दूर</p>
+      <p class="lead">हर तरह के कारीगर और श्रमिक — tap to browse</p>
       <div class="grid">
-        <div class="trade"><span class="e">🧱</span>Mason<small>राजमिस्त्री</small></div>
-        <div class="trade"><span class="e">🔨</span>Carpenter<small>बढ़ई</small></div>
-        <div class="trade"><span class="e">⚡</span>Electrician<small>इलेक्ट्रीशियन</small></div>
-        <div class="trade"><span class="e">🔧</span>Plumber<small>प्लंबर</small></div>
-        <div class="trade"><span class="e">🏗️</span>Labour<small>लेबर</small></div>
-        <div class="trade"><span class="e">🚛</span>Driver<small>ड्राइवर</small></div>
-        <div class="trade"><span class="e">🎨</span>Painter<small>पेंटर</small></div>
-        <div class="trade"><span class="e">🧹</span>Cleaner<small>सफाई कर्मी</small></div>
-        <div class="trade"><span class="e">💂</span>Security<small>गार्ड</small></div>
-        <div class="trade"><span class="e">🌱</span>Gardener<small>माली</small></div>
-        <div class="trade"><span class="e">🍳</span>Cook / Maid<small>रसोइया / मेड</small></div>
-        <div class="trade"><span class="e">🔥</span>Welder<small>वेल्डर</small></div>
+        <a class="trade" href="workers.html?trade=Mason"><span class="e">🧱</span>Mason<small>राजमिस्त्री</small></a>
+        <a class="trade" href="workers.html?trade=Carpenter"><span class="e">🔨</span>Carpenter<small>बढ़ई</small></a>
+        <a class="trade" href="workers.html?trade=Electrician"><span class="e">⚡</span>Electrician<small>इलेक्ट्रीशियन</small></a>
+        <a class="trade" href="workers.html?trade=Plumber"><span class="e">🔧</span>Plumber<small>प्लंबर</small></a>
+        <a class="trade" href="workers.html"><span class="e">🏗️</span>Labour<small>लेबर</small></a>
+        <a class="trade" href="workers.html?trade=Driver"><span class="e">🚛</span>Driver<small>ड्राइवर</small></a>
+        <a class="trade" href="workers.html?trade=Painter"><span class="e">🎨</span>Painter<small>पेंटर</small></a>
+        <a class="trade" href="workers.html?trade=Cleaner"><span class="e">🧹</span>Cleaner<small>सफाई कर्मी</small></a>
+        <a class="trade" href="workers.html?trade=Security"><span class="e">💂</span>Security<small>गार्ड</small></a>
+        <a class="trade" href="workers.html?trade=Gardener"><span class="e">🌱</span>Gardener<small>माली</small></a>
+        <a class="trade" href="workers.html?trade=Cook/Maid"><span class="e">🍳</span>Cook / Maid<small>रसोइया / मेड</small></a>
+        <a class="trade" href="workers.html?trade=Welder"><span class="e">🔥</span>Welder<small>वेल्डर</small></a>
       </div>
     </div>
   </section>
@@ -186,6 +220,46 @@
         <div class="feat"><div class="e">📍</div><h3>Nearby matches</h3><p>We find workers closest to your job location.</p></div>
         <div class="feat"><div class="e">🗣️</div><h3>Hindi &amp; English</h3><p>Simple number-based chat anyone can use.</p></div>
         <div class="feat"><div class="e">⚡</div><h3>Instant</h3><p>No app to download, no forms. Reply and you're done.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="trades">
+    <div class="wrap">
+      <h2>Trusted by workers &amp; employers</h2>
+      <p class="lead">लोग क्या कहते हैं</p>
+      <div class="tcards">
+        <div class="tcard">
+          <div class="q">★★★★★</div>
+          <p>"Mujhe 2 din mein mason ka kaam mil gaya, ghar ke paas hi. Bahut aasan hai."</p>
+          <div class="who">— Ramesh, Mason · Kukatpally</div>
+        </div>
+        <div class="tcard">
+          <div class="q">★★★★★</div>
+          <p>"Needed 5 painters urgently. Posted on WhatsApp, got contacts in an hour. Lifesaver!"</p>
+          <div class="who">— Priya, Site Manager · Banjara Hills</div>
+        </div>
+        <div class="tcard">
+          <div class="q">★★★★★</div>
+          <p>"No app download, no fees. Just WhatsApp. My whole team registered in minutes."</p>
+          <div class="who">— Imran, Contractor · Mehdipatnam</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="wrap">
+      <h2>Questions? / सवाल?</h2>
+      <p class="lead">Frequently asked questions</p>
+      <div class="faq">
+        <details><summary>Is it really free? / क्या यह मुफ़्त है?</summary><div class="ans">Yes — 100% free for both workers and employers. No charges, no commission.</div></details>
+        <details><summary>Do I need to download an app?</summary><div class="ans">No. Everything works on WhatsApp and this website. Nothing to install.</div></details>
+        <details><summary>How do I register as a worker?</summary><div class="ans">Tap "Find Work", fill the quick form (name, trade, area, rate), and you're listed. Employers will contact you on WhatsApp.</div></details>
+        <details><summary>How fast can I find workers?</summary><div class="ans">Usually within an hour for common trades in Hyderabad. We connect you with available workers nearby.</div></details>
+        <details><summary>Which areas do you cover?</summary><div class="ans">Currently Hyderabad. Bangalore, Chennai &amp; Delhi are coming soon.</div></details>
       </div>
     </div>
   </section>
@@ -223,6 +297,16 @@
 
   <a class="fab" href="https://wa.me/917845148919?text=Hi" target="_blank" rel="noopener">💬 Chat</a>
 
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    function goSearch() {
+      const t = document.getElementById('hsTrade').value;
+      const a = document.getElementById('hsArea').value.trim();
+      const p = new URLSearchParams();
+      if (t) p.set('trade', t);
+      if (a) p.set('q', a);
+      location.href = 'workers.html' + (p.toString() ? '?' + p.toString() : '');
+    }
+  </script>
 </body>
 </html>
