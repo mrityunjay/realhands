@@ -1,53 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="RealHands logo">
   <defs>
-    <linearGradient id="rhGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2bd06e"/>
-      <stop offset="0.55" stop-color="#10a36f"/>
-      <stop offset="1" stop-color="#075e54"/>
+    <linearGradient id="rhg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="0.5" stop-color="#10b981"/>
+      <stop offset="1" stop-color="#0891b2"/>
     </linearGradient>
-    <filter id="rhShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#063f39" flood-opacity="0.28"/>
+    <filter id="rhs" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.2" flood-color="#063f47" flood-opacity="0.25"/>
     </filter>
   </defs>
 
   <!-- Badge -->
-  <g filter="url(#rhShadow)">
-    <rect x="8" y="8" width="112" height="112" rx="30" fill="url(#rhGrad)"/>
-  </g>
-  <ellipse cx="46" cy="34" rx="38" ry="22" fill="#ffffff" opacity="0.10"/>
+  <rect x="8" y="8" width="112" height="112" rx="30" fill="url(#rhg)" filter="url(#rhs)"/>
+  <ellipse cx="46" cy="34" rx="38" ry="22" fill="#ffffff" opacity="0.12"/>
 
-  <!-- Ground shadow + dirt mound -->
-  <path d="M16 104 Q64 90 112 104 L112 116 Q64 122 16 116 Z" fill="#063f39" opacity="0.30"/>
-  <ellipse cx="64" cy="101" rx="22" ry="8" fill="#FFD79A"/>
-  <ellipse cx="64" cy="99" rx="13" ry="5" fill="#FFE9C7"/>
-
-  <!-- Worker template: facing right, shovelling. Used twice (right one mirrored). -->
+  <!-- Open hand (white) -->
   <g fill="#ffffff">
-    <!-- LEFT worker -->
-    <g transform="translate(34 44)">
-      <rect x="-2" y="30" width="6" height="18" rx="3" transform="rotate(-7 1 39)"/>
-      <rect x="6" y="31" width="6" height="17" rx="3" transform="rotate(9 9 39)"/>
-      <rect x="-3" y="14" width="13" height="24" rx="6.5" transform="rotate(20 3 26)"/>
-      <circle cx="11" cy="9" r="7.5"/>
-      <rect x="7" y="14" width="5.5" height="20" rx="2.75" transform="rotate(46 10 16)"/>
-      <ellipse cx="11" cy="3" rx="10" ry="5.5" fill="#FFC107"/>
-      <rect x="0" y="3" width="22" height="3.6" rx="1.8" fill="#FFC107"/>
-      <!-- shovel -->
-      <rect x="18" y="12" width="4" height="34" rx="2" transform="rotate(33 20 29)" fill="#eef3f1"/>
-      <path d="M33 44 l9 5 -3 10 -9 -5 z" transform="rotate(33 36 50)" fill="#eef3f1"/>
-    </g>
-
-    <!-- RIGHT worker (mirrored) -->
-    <g transform="translate(94 44) scale(-1,1)">
-      <rect x="-2" y="30" width="6" height="18" rx="3" transform="rotate(-7 1 39)"/>
-      <rect x="6" y="31" width="6" height="17" rx="3" transform="rotate(9 9 39)"/>
-      <rect x="-3" y="14" width="13" height="24" rx="6.5" transform="rotate(20 3 26)"/>
-      <circle cx="11" cy="9" r="7.5"/>
-      <rect x="7" y="14" width="5.5" height="20" rx="2.75" transform="rotate(46 10 16)"/>
-      <ellipse cx="11" cy="3" rx="10" ry="5.5" fill="#FFC107"/>
-      <rect x="0" y="3" width="22" height="3.6" rx="1.8" fill="#FFC107"/>
-      <rect x="18" y="12" width="4" height="34" rx="2" transform="rotate(33 20 29)" fill="#eef3f1"/>
-      <path d="M33 44 l9 5 -3 10 -9 -5 z" transform="rotate(33 36 50)" fill="#eef3f1"/>
-    </g>
+    <!-- fingers -->
+    <rect x="33"  y="42" width="12.5" height="42" rx="6.25"/>
+    <rect x="48"  y="35" width="12.5" height="49" rx="6.25"/>
+    <rect x="63"  y="38" width="12.5" height="46" rx="6.25"/>
+    <rect x="78"  y="46" width="12.5" height="38" rx="6.25"/>
+    <!-- thumb -->
+    <rect x="20" y="64" width="12.5" height="34" rx="6.25" transform="rotate(-40 26.25 81)"/>
+    <!-- palm -->
+    <rect x="31" y="72" width="62" height="34" rx="17"/>
   </g>
 </svg>
