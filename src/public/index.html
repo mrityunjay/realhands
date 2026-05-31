@@ -6,6 +6,9 @@
   <title>RealHands — Find Work & Hire Workers on WhatsApp</title>
   <meta name="description" content="RealHands connects skilled and daily-wage workers with employers across India — directly on WhatsApp. No app, no signup. Masons, electricians, plumbers, drivers, security guards & more." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#075E54" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
     :root { --green:#075E54; --green2:#128C7E; --wa:#25D366; --ink:#1a1a1a; --muted:#667; --bg:#f6f8f7; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -105,6 +108,13 @@
     .faq summary::after { content: '+'; float: right; color: var(--green2); font-size: 20px; line-height: 1; }
     .faq details[open] summary::after { content: '\2212'; }
     .faq .ans { color: var(--muted); font-size: 14px; padding: 0 0 15px; }
+    .announce { background: #0b3d36; color: #d7f5e6; text-align: center; font-size: 13px; padding: 8px 14px; }
+    .announce b { color: #fff; }
+    .promise { background: var(--bg); }
+    .pgrid { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 16px; }
+    .pbox { background: #fff; border-radius: 14px; padding: 22px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+    .pbox .e { font-size: 30px; } .pbox h3 { font-size: 15px; margin: 8px 0 4px; } .pbox p { color: var(--muted); font-size: 13px; }
+    .sharebtn { display: inline-block; background: var(--wa); color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 24px; font-weight: 700; margin-top: 6px; cursor: pointer; border: none; font-size: 15px; }
   </style>
 </head>
 <body>
@@ -114,10 +124,13 @@
       <div class="logo"><img class="mark" src="/logo-mark.svg" alt="" />RealHands<span class="dot">.</span></div>
       <div class="links">
         <a class="nl" href="workers.html">Find Workers</a>
+        <a class="nl" href="trust.html">Trust</a>
         <a class="cta" href="register-company.html">Hire Now</a>
       </div>
     </div>
   </nav>
+
+  <div class="announce">🚀 <b>Now launching in Hyderabad</b> — be among the founding workers &amp; employers. 100% free.</div>
 
   <!-- HERO -->
   <header class="hero">
@@ -224,6 +237,21 @@
     </div>
   </section>
 
+  <!-- PROMISE -->
+  <section class="promise">
+    <div class="wrap">
+      <h2>The RealHands Promise</h2>
+      <p class="lead">आपका भरोसा, हमारी ज़िम्मेदारी</p>
+      <div class="pgrid">
+        <div class="pbox"><div class="e">✅</div><h3>Verified workers</h3><p>Phone-verified profiles with a ✔️ badge — hire real people.</p></div>
+        <div class="pbox"><div class="e">🔁</div><h3>Replacement guarantee</h3><p>If a confirmed worker doesn't show, we help find another — free.</p></div>
+        <div class="pbox"><div class="e">🔒</div><h3>Private &amp; safe</h3><p>Your number is shared only when you agree to connect.</p></div>
+        <div class="pbox"><div class="e">📞</div><h3>Real human support</h3><p>A real person on WhatsApp for any problem or complaint.</p></div>
+      </div>
+      <p style="text-align:center;margin-top:18px;"><a href="trust.html" style="color:var(--green2);font-weight:600;text-decoration:none;">Learn how we keep work real &amp; safe →</a></p>
+    </div>
+  </section>
+
   <!-- TESTIMONIALS -->
   <section class="trades">
     <div class="wrap">
@@ -279,6 +307,7 @@
         <span class="city soon">Chennai — soon</span>
         <span class="city soon">Delhi — soon</span>
       </p>
+      <button class="sharebtn" onclick="shareSite()">📲 Share RealHands</button>
     </div>
   </section>
 
@@ -289,7 +318,9 @@
         <p style="margin-top:6px;opacity:.8;">India's WhatsApp marketplace for real work.</p>
       </div>
       <div>
+        <a href="trust.html">Trust &amp; Safety</a> &nbsp;·&nbsp;
         <a href="https://wa.me/__WA_NUMBER__?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a> &nbsp;·&nbsp;
+        <a href="#" onclick="shareSite();return false;">Share</a> &nbsp;·&nbsp;
         <span style="opacity:.7;">© <span id="yr"></span> RealHands</span>
       </div>
     </div>
@@ -299,6 +330,13 @@
 
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+    function shareSite() {
+      const url = location.origin + location.pathname.replace(/index\.html$/, '');
+      const data = { title: 'RealHands', text: 'Find work or hire workers — free on RealHands', url };
+      if (navigator.share) navigator.share(data).catch(() => {});
+      else window.open('https://wa.me/?text=' + encodeURIComponent(data.text + ' ' + url), '_blank');
+    }
     function goSearch() {
       const t = document.getElementById('hsTrade').value;
       const a = document.getElementById('hsArea').value.trim();
