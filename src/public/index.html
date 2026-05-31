@@ -3,129 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RealHands — Find Work & Hire Workers on WhatsApp</title>
-  <meta name="description" content="RealHands connects skilled and daily-wage workers with employers across India — directly on WhatsApp. No app, no signup. Masons, electricians, plumbers, drivers, security guards & more." />
+  <title>RealHands — Find Work & Hire Skilled Workers Near You</title>
+  <meta name="description" content="RealHands connects skilled & daily-wage workers with employers nearby — free, in Hindi & English. Masons, electricians, plumbers, drivers, security, and more." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <meta name="theme-color" content="#075E54" />
+  <meta name="theme-color" content="#08221d" />
   <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root { --green:#075E54; --green2:#128C7E; --wa:#25D366; --ink:#1a1a1a; --muted:#667; --bg:#f6f8f7; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--ink); background: #fff; line-height: 1.55; }
-    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    :root{
+      --ink:#0f1b18; --muted:#5b6b67; --bg:#f6f8f7; --card:#fff;
+      --emerald:#10b981; --emerald2:#06b6d4; --deep:#0a3d35; --deep2:#082a25;
+      --amber:#f59e0b; --amber2:#fbbf24; --wa:#25D366;
+      --radius:20px; --shadow:0 10px 30px rgba(10,40,35,.10);
+      --grad:linear-gradient(135deg,#10b981,#06b6d4);
+      --gradWarm:linear-gradient(135deg,#f59e0b,#fb923c);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+    .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
     /* Nav */
-    nav { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid #eee; }
-    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
-    .logo { font-weight: 800; font-size: 21px; color: var(--green); display: flex; align-items: center; gap: 9px; }
-    .logo img.mark { height: 36px; width: 36px; }
-    .logo span.dot { color: var(--wa); }
-    nav a.cta { background: var(--wa); color: #fff; text-decoration: none; padding: 9px 16px; border-radius: 22px; font-weight: 600; font-size: 14px; }
+    nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,.06)}
+    nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+    .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;color:var(--deep)}
+    .logo img{width:36px;height:36px}
+    nav .links{display:flex;align-items:center;gap:22px}
+    nav .links a.nl{color:var(--ink);text-decoration:none;font-weight:600;font-size:14px;opacity:.85}
+    nav .links a.nl:hover{opacity:1}
+    .btn-pill{background:var(--gradWarm);color:#3a2400;text-decoration:none;padding:10px 18px;border-radius:30px;font-weight:800;font-size:14px;box-shadow:0 6px 18px rgba(245,158,11,.35)}
+
+    /* Announce */
+    .announce{background:var(--deep2);color:#bff3df;text-align:center;font-size:13px;padding:9px 14px;font-weight:600}
+    .announce b{color:#fff}
 
     /* Hero */
-    .hero { background: linear-gradient(160deg, #0b6b5f 0%, #075E54 60%, #064c44 100%); color: #fff; padding: 56px 0 64px; }
-    .hero h1 { font-size: 38px; line-height: 1.15; font-weight: 800; letter-spacing: -.5px; }
-    .hero .hi { display: block; font-size: 22px; font-weight: 600; opacity: .92; margin-bottom: 10px; }
-    .hero p.sub { font-size: 17px; opacity: .92; margin: 18px 0 8px; max-width: 620px; }
-    .hero .tag { display: inline-block; margin-top: 14px; font-size: 13px; background: rgba(255,255,255,.15); padding: 6px 14px; border-radius: 20px; }
-    .ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
-    .btn { text-decoration: none; border-radius: 14px; padding: 18px 22px; font-weight: 700; font-size: 17px; display: flex; flex-direction: column; gap: 2px; min-width: 230px; transition: transform .12s; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn small { font-weight: 500; font-size: 13px; opacity: .85; }
-    .btn.work { background: var(--wa); color: #fff; }
-    .btn.hire { background: #fff; color: var(--green); }
-    .btn .wa { font-size: 13px; opacity: .9; margin-top: 4px; }
-    .note { margin-top: 18px; font-size: 14px; opacity: .9; }
-    .note b { font-weight: 700; }
+    .hero{position:relative;overflow:hidden;color:#fff;
+      background:radial-gradient(60% 60% at 18% 12%,#0f5a4e 0%,transparent 55%),
+                 radial-gradient(50% 50% at 88% 0%,#0b4a63 0%,transparent 50%),
+                 linear-gradient(165deg,#082a25,#0a3d35 55%,#07211d)}
+    .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;z-index:0;animation:drift 14s ease-in-out infinite alternate}
+    .hero::before{width:340px;height:340px;background:#10b981;top:-60px;right:-40px}
+    .hero::after{width:300px;height:300px;background:#f59e0b;bottom:-80px;left:-50px;opacity:.35;animation-delay:-7s}
+    @keyframes drift{to{transform:translate(30px,30px) scale(1.1)}}
+    .hero .wrap{position:relative;z-index:1;padding:60px 22px 70px}
+    .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+    .pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:30px;padding:6px 14px;font-size:12.5px;font-weight:600;backdrop-filter:blur(6px)}
+    h1{font-size:46px;line-height:1.08;font-weight:800;letter-spacing:-1.2px;max-width:780px}
+    .hero p.sub{font-size:18px;opacity:.9;margin:20px 0 6px;max-width:600px;font-weight:500}
+    .ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+    .btn{text-decoration:none;border-radius:16px;padding:16px 26px;font-weight:800;font-size:16px;display:inline-flex;align-items:center;gap:8px;transition:transform .14s,box-shadow .14s}
+    .btn:hover{transform:translateY(-3px)}
+    .btn.primary{background:var(--gradWarm);color:#3a2400;box-shadow:0 12px 28px rgba(245,158,11,.4)}
+    .btn.ghost{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.35);backdrop-filter:blur(6px)}
+    .search{display:flex;gap:8px;flex-wrap:wrap;margin-top:30px;background:rgba(255,255,255,.96);padding:10px;border-radius:18px;max-width:600px;box-shadow:0 16px 40px rgba(0,0,0,.25)}
+    .search select,.search input{flex:1;min-width:140px;padding:13px;border:1px solid #e3e8e7;border-radius:11px;font-size:14px;color:var(--ink);font-family:inherit}
+    .search button{background:var(--grad);color:#fff;border:none;padding:13px 22px;border-radius:11px;font-weight:800;cursor:pointer;font-family:inherit;font-size:14px}
+    .statbar{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+    .statbar .st{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:14px 20px;backdrop-filter:blur(6px)}
+    .statbar .st b{display:block;font-size:26px;font-weight:800}
+    .statbar .st span{font-size:12px;opacity:.8}
 
-    section { padding: 56px 0; }
-    section h2 { font-size: 27px; font-weight: 800; text-align: center; margin-bottom: 6px; letter-spacing: -.3px; }
-    section .lead { text-align: center; color: var(--muted); margin-bottom: 36px; }
+    /* Sections */
+    section{padding:72px 0}
+    .eyebrow{text-align:center;color:var(--emerald);font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase}
+    h2{font-size:34px;font-weight:800;text-align:center;letter-spacing:-.6px;margin:8px 0}
+    .lead{text-align:center;color:var(--muted);margin-bottom:42px;font-size:16px}
+    .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s,transform .6s}
+    .js .reveal.in{opacity:1;transform:none}
 
-    /* How it works */
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 20px; }
-    .step { background: var(--bg); border-radius: 16px; padding: 26px; text-align: center; }
-    .step .n { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 14px; }
-    .step .emoji { font-size: 30px; }
-    .step h3 { font-size: 17px; margin: 10px 0 6px; }
-    .step p { color: var(--muted); font-size: 14px; }
+    .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+    .step{background:var(--card);border:1px solid #eef2f1;border-radius:var(--radius);padding:30px 26px;box-shadow:var(--shadow)}
+    .step .ico{width:54px;height:54px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:16px}
+    .step h3{font-size:18px;margin-bottom:6px}.step p{color:var(--muted);font-size:14.5px}
+    .step .num{float:right;font-size:34px;font-weight:800;color:#eef2f1;margin-top:-6px}
 
-    /* Trades */
-    .trades { background: var(--bg); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 14px; }
-    .trade { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 18px 14px; text-align: center; font-weight: 600; font-size: 15px; }
-    .trade .e { font-size: 28px; display: block; margin-bottom: 8px; }
-    .trade small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; }
+    .trades-sec{background:var(--bg)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+    a.trade{background:var(--card);border:1px solid #eef2f1;border-radius:16px;padding:20px 14px;text-align:center;font-weight:700;font-size:15px;text-decoration:none;color:var(--ink);display:block;transition:transform .14s,box-shadow .14s}
+    a.trade:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+    a.trade .e{font-size:30px;display:block;margin-bottom:8px}
+    a.trade small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
 
-    /* Why */
-    .why { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 18px; }
-    .feat { padding: 22px; border-radius: 14px; border: 1px solid #eee; }
-    .feat .e { font-size: 26px; }
-    .feat h3 { font-size: 16px; margin: 10px 0 4px; }
-    .feat p { color: var(--muted); font-size: 14px; }
+    .promise{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+    .pbox{background:var(--card);border:1px solid #eef2f1;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+    .pbox .ico{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#e9fbf4,#dff7ff);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px}
+    .pbox h3{font-size:16px;margin-bottom:5px}.pbox p{color:var(--muted);font-size:14px}
 
-    /* CTA band */
-    .band { background: var(--green); color: #fff; text-align: center; }
-    .band h2 { color: #fff; }
-    .band .ctas { justify-content: center; }
-    .band .lead { color: rgba(255,255,255,.85); }
+    .value-sec{background:var(--bg)}
+    .vcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .vcard{background:var(--card);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);border-top:4px solid transparent;border-image:var(--grad) 1}
+    .vcard .tag{font-weight:800;font-size:15px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .vcard p{font-size:14.5px;color:#39433f;margin-top:8px}
 
-    footer { background: #08322d; color: #cfe; padding: 34px 0; font-size: 14px; }
-    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-    footer a { color: #9fe; text-decoration: none; }
-    .city { display: inline-block; background: var(--bg); border-radius: 20px; padding: 6px 14px; margin: 4px; font-size: 14px; }
-    .city.soon { color: var(--muted); }
+    .faq{max-width:740px;margin:0 auto}
+    .faq details{background:var(--card);border:1px solid #eef2f1;border-radius:14px;margin-bottom:12px;padding:4px 20px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .faq summary{cursor:pointer;padding:16px 0;font-weight:700;font-size:15.5px;list-style:none}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::after{content:'+';float:right;color:var(--emerald);font-size:22px;line-height:1}
+    .faq details[open] summary::after{content:'\2212'}
+    .faq .ans{color:var(--muted);font-size:14.5px;padding:0 0 16px}
 
-    .stats { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 28px; }
-    .stats div { font-size: 14px; opacity: .92; }
-    .stats b { display: block; font-size: 26px; font-weight: 800; }
-    .fab { position: fixed; right: 18px; bottom: 18px; background: var(--wa); color: #fff; text-decoration: none; padding: 14px 20px; border-radius: 30px; font-weight: 700; box-shadow: 0 6px 22px rgba(0,0,0,.28); z-index: 60; display: flex; align-items: center; gap: 8px; }
-    .fab:hover { filter: brightness(1.05); }
+    .band{position:relative;overflow:hidden;color:#fff;text-align:center;border-radius:28px;margin:0 22px;
+      background:radial-gradient(60% 80% at 80% 0%,#0b4a63,transparent 55%),linear-gradient(135deg,#0a3d35,#082a25)}
+    .band .inner{max-width:1120px;margin:0 auto;padding:60px 22px}
+    .band h2{color:#fff}.band .lead{color:rgba(255,255,255,.82)}
+    .band .ctas{justify-content:center}
+    .city{display:inline-block;background:rgba(255,255,255,.1);border-radius:22px;padding:7px 16px;margin:5px;font-size:14px;border:1px solid rgba(255,255,255,.16)}
+    .city.soon{opacity:.6}
+    .sharebtn{display:inline-block;background:var(--wa);color:#fff;border:none;padding:13px 24px;border-radius:26px;font-weight:800;cursor:pointer;font-size:15px;font-family:inherit;margin-top:18px}
 
-    @media (max-width: 640px) {
-      .hero h1 { font-size: 30px; }
-      .btn { min-width: 100%; }
-      .stats { gap: 20px; }
+    footer{background:#06201c;color:#9fd9c8;padding:40px 0;font-size:14px}
+    footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:center}
+    footer a{color:#7fe9c5;text-decoration:none}
+    footer .logo{color:#fff}
+
+    /* Chat widget */
+    .chat-launcher{position:fixed;right:18px;bottom:18px;width:60px;height:60px;border-radius:50%;background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;box-shadow:0 10px 26px rgba(37,211,102,.45);z-index:80;transition:transform .15s}
+    .chat-launcher:hover{transform:scale(1.06)}
+    .chat-launcher.hide{display:none}
+    .chat-launcher .dot{position:absolute;top:2px;right:2px;width:16px;height:16px;background:#f43f5e;border-radius:50%;border:2px solid #fff}
+    .chat-panel{position:fixed;right:18px;bottom:18px;width:340px;max-width:calc(100vw - 36px);background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.3);z-index:81;overflow:hidden;display:none;flex-direction:column}
+    .chat-panel.open{display:flex;animation:pop .2s ease}
+    @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}}
+    .chat-head{background:linear-gradient(135deg,#0a3d35,#082a25);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+    .chat-head img{width:38px;height:38px}
+    .ch-name{font-weight:800;font-size:15px}.ch-sub{font-size:11.5px;color:#7fe9c5}
+    .ch-close{margin-left:auto;background:rgba(255,255,255,.16);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px}
+    .chat-body{padding:16px;background:#eef3f1;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+    .ch-msg{max-width:85%;padding:9px 13px;border-radius:14px;font-size:14px;line-height:1.45}
+    .ch-msg.bot{background:#fff;align-self:flex-start;border-top-left-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+    .ch-msg.user{background:#dcf8c6;align-self:flex-end;border-top-right-radius:3px}
+    .ch-quick{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+    .ch-quick button{background:#fff;border:1.5px solid var(--emerald);color:var(--deep);padding:10px;border-radius:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:13.5px}
+    .ch-quick button:hover{background:#f0fbf7}
+    .chat-input{display:flex;gap:8px;padding:10px;background:#fff;border-top:1px solid #eee}
+    .chat-input input{flex:1;border:1px solid #e0e6e4;border-radius:22px;padding:11px 15px;font-size:14px;outline:none;font-family:inherit}
+    .chat-input button{background:var(--wa);color:#fff;border:none;width:44px;border-radius:50%;font-size:18px;cursor:pointer}
+    .chat-foot{text-align:center;font-size:11px;color:#8aa;padding:7px;background:#fff}
+
+    @media(max-width:680px){
+      h1{font-size:33px}.hero .wrap{padding:46px 22px 56px}
+      h2{font-size:27px}.btn{flex:1;justify-content:center}
     }
-    nav .links { display: flex; align-items: center; gap: 18px; }
-    nav .links a.nl { color: var(--green); text-decoration: none; font-weight: 600; font-size: 14px; }
-    .hsearch { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 26px; background: #fff; padding: 10px; border-radius: 14px; max-width: 580px; box-shadow: 0 6px 20px rgba(0,0,0,.18); }
-    .hsearch select, .hsearch input { flex: 1; min-width: 130px; padding: 12px; border: 1px solid #e3e8e7; border-radius: 9px; font-size: 14px; color: var(--ink); }
-    .hsearch button { background: var(--green); color: #fff; border: none; padding: 12px 20px; border-radius: 9px; font-weight: 700; cursor: pointer; }
-    a.trade { text-decoration: none; color: var(--ink); display: block; transition: .15s; }
-    a.trade:hover { box-shadow: 0 6px 16px rgba(0,0,0,.12); transform: translateY(-3px); }
-    .tcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 16px; }
-    .tcard { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 1px 4px rgba(0,0,0,.07); text-align: left; }
-    .tcard .q { color: #ff9800; font-size: 15px; }
-    .tcard p { font-size: 14px; margin: 10px 0; color: #333; }
-    .tcard .who { color: var(--muted); font-size: 13px; font-weight: 600; }
-    .faq { max-width: 720px; margin: 0 auto; }
-    .faq details { background: #fff; border-radius: 12px; margin-bottom: 10px; padding: 2px 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
-    .faq summary { cursor: pointer; padding: 15px 0; font-weight: 600; font-size: 15px; list-style: none; }
-    .faq summary::-webkit-details-marker { display: none; }
-    .faq summary::after { content: '+'; float: right; color: var(--green2); font-size: 20px; line-height: 1; }
-    .faq details[open] summary::after { content: '\2212'; }
-    .faq .ans { color: var(--muted); font-size: 14px; padding: 0 0 15px; }
-    .announce { background: #0b3d36; color: #d7f5e6; text-align: center; font-size: 13px; padding: 8px 14px; }
-    .announce b { color: #fff; }
-    .promise { background: var(--bg); }
-    .pgrid { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 16px; }
-    .pbox { background: #fff; border-radius: 14px; padding: 22px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
-    .pbox .e { font-size: 30px; } .pbox h3 { font-size: 15px; margin: 8px 0 4px; } .pbox p { color: var(--muted); font-size: 13px; }
-    .sharebtn { display: inline-block; background: var(--wa); color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 24px; font-weight: 700; margin-top: 6px; cursor: pointer; border: none; font-size: 15px; }
   </style>
+  <script>document.documentElement.className += ' js';</script>
 </head>
 <body>
 
   <nav>
     <div class="wrap">
-      <div class="logo"><img class="mark" src="/logo-mark.svg" alt="" />RealHands<span class="dot">.</span></div>
+      <div class="logo"><img src="/logo-mark.svg" alt="" />RealHands</div>
       <div class="links">
         <a class="nl" href="workers.html">Find Workers</a>
         <a class="nl" href="trust.html">Trust</a>
-        <a class="cta" href="register-company.html">Hire Now</a>
+        <a class="btn-pill" href="register-company.html">Hire Now</a>
       </div>
     </div>
   </nav>
@@ -135,25 +171,19 @@
   <!-- HERO -->
   <header class="hero">
     <div class="wrap">
-      <span class="hi">काम ढूँढो • श्रमिक पाओ</span>
-      <h1>Find work. Hire workers.<br>All on WhatsApp.</h1>
-      <p class="sub">RealHands connects skilled &amp; daily-wage workers with employers across India — directly on WhatsApp. <b>No app. No signup. No fees.</b></p>
-      <span class="tag">💪 The work AI can't do — done by real human hands.</span>
-
-      <div class="ctas">
-        <a class="btn work" href="register-worker.html">
-          💼 काम चाहिए
-          <small>Find Work (I'm a worker)</small>
-          <span class="wa">→ Quick registration</span>
-        </a>
-        <a class="btn hire" href="register-company.html">
-          👷 श्रमिक चाहिए
-          <small>Hire Workers (I'm an employer)</small>
-          <span class="wa">→ Quick registration</span>
-        </a>
+      <div class="pill-row">
+        <span class="pill">🆓 100% Free</span>
+        <span class="pill">✅ Verified workers</span>
+        <span class="pill">📍 Hyderabad</span>
+        <span class="pill">🗣️ हिंदी &amp; English</span>
       </div>
-      <p class="note">Tap a button → fill a quick form → we connect you on WhatsApp. <b>That's it.</b></p>
-      <div class="hsearch">
+      <h1>The fastest way to <span class="grad-text">find work</span> &amp; <span class="grad-text">hire skilled workers</span> near you.</h1>
+      <p class="sub">RealHands connects daily-wage &amp; skilled workers with employers nearby — free, simple, on WhatsApp. <b>The work AI can't do — done by real human hands.</b></p>
+      <div class="ctas">
+        <a class="btn primary" href="register-worker.html">💼 Find Work</a>
+        <a class="btn ghost" href="register-company.html">👷 Hire Workers</a>
+      </div>
+      <div class="search">
         <select id="hsTrade">
           <option value="">All trades</option>
           <option>Mason</option><option>Electrician</option><option>Plumber</option>
@@ -164,11 +194,11 @@
         <input id="hsArea" placeholder="Area (e.g. Kukatpally)" />
         <button onclick="goSearch()">🔍 Find Workers</button>
       </div>
-
-      <div class="stats">
-        <div><b>12</b>trades covered</div>
-        <div><b>100%</b>free to use</div>
-        <div><b>हिं/EN</b>two languages</div>
+      <div class="statbar">
+        <div class="st"><b data-count="12">0</b><span>Trades covered</span></div>
+        <div class="st"><b>₹0</b><span>Fees, ever</span></div>
+        <div class="st"><b data-count="2">0</b><span>Languages</span></div>
+        <div class="st"><b>WhatsApp</b><span>No app needed</span></div>
       </div>
     </div>
   </header>
@@ -176,37 +206,24 @@
   <!-- HOW IT WORKS -->
   <section>
     <div class="wrap">
-      <h2>How it works</h2>
-      <p class="lead">कैसे काम करता है — 3 आसान कदम</p>
+      <div class="eyebrow reveal">Simple</div>
+      <h2 class="reveal">How it works</h2>
+      <p class="lead reveal">3 easy steps · 3 आसान कदम</p>
       <div class="steps">
-        <div class="step">
-          <div class="n">1</div>
-          <div class="emoji">👆</div>
-          <h3>Choose your role</h3>
-          <p>Tap <b>Find Work</b> (worker) or <b>Hire Workers</b> (employer).</p>
-        </div>
-        <div class="step">
-          <div class="n">2</div>
-          <div class="emoji">✍️</div>
-          <h3>Fill a quick form</h3>
-          <p>1-minute form — your trade, area and rate. In Hindi or English.</p>
-        </div>
-        <div class="step">
-          <div class="n">3</div>
-          <div class="emoji">🤝</div>
-          <h3>Get connected</h3>
-          <p>We connect you with people nearby on WhatsApp. Call &amp; start work.</p>
-        </div>
+        <div class="step reveal"><span class="num">1</span><div class="ico">👆</div><h3>Choose your role</h3><p>Tap <b>Find Work</b> (worker) or <b>Hire Workers</b> (employer).</p></div>
+        <div class="step reveal"><span class="num">2</span><div class="ico">✍️</div><h3>Fill a quick form</h3><p>1-minute form — trade, area &amp; rate. In Hindi or English.</p></div>
+        <div class="step reveal"><span class="num">3</span><div class="ico">🤝</div><h3>Get connected</h3><p>We connect you with people nearby on WhatsApp. Call &amp; start work.</p></div>
       </div>
     </div>
   </section>
 
   <!-- TRADES -->
-  <section class="trades">
+  <section class="trades-sec">
     <div class="wrap">
-      <h2>Workers for every job</h2>
-      <p class="lead">हर तरह के कारीगर और श्रमिक — tap to browse</p>
-      <div class="grid">
+      <div class="eyebrow reveal">12 trades</div>
+      <h2 class="reveal">Workers for every job</h2>
+      <p class="lead reveal">हर तरह के कारीगर और श्रमिक — tap to browse</p>
+      <div class="grid reveal">
         <a class="trade" href="workers.html?trade=Mason"><span class="e">🧱</span>Mason<small>राजमिस्त्री</small></a>
         <a class="trade" href="workers.html?trade=Carpenter"><span class="e">🔨</span>Carpenter<small>बढ़ई</small></a>
         <a class="trade" href="workers.html?trade=Electrician"><span class="e">⚡</span>Electrician<small>इलेक्ट्रीशियन</small></a>
@@ -223,67 +240,47 @@
     </div>
   </section>
 
-  <!-- WHY -->
+  <!-- PROMISE -->
   <section>
     <div class="wrap">
-      <h2>Why RealHands</h2>
-      <p class="lead">भरोसेमंद, मुफ़्त और आसान</p>
-      <div class="why">
-        <div class="feat"><div class="e">🆓</div><h3>Completely free</h3><p>No charges for workers or employers. Ever.</p></div>
-        <div class="feat"><div class="e">📍</div><h3>Nearby matches</h3><p>We find workers closest to your job location.</p></div>
-        <div class="feat"><div class="e">🗣️</div><h3>Hindi &amp; English</h3><p>Simple number-based chat anyone can use.</p></div>
-        <div class="feat"><div class="e">⚡</div><h3>Instant</h3><p>No app to download, no forms. Reply and you're done.</p></div>
+      <div class="eyebrow reveal">Trust</div>
+      <h2 class="reveal">The RealHands Promise</h2>
+      <p class="lead reveal">आपका भरोसा, हमारी ज़िम्मेदारी</p>
+      <div class="promise">
+        <div class="pbox reveal"><div class="ico">✅</div><h3>Verified workers</h3><p>Phone-verified profiles with a ✔️ badge — hire real people.</p></div>
+        <div class="pbox reveal"><div class="ico">🔁</div><h3>Replacement guarantee</h3><p>If a confirmed worker doesn't show, we help find another — free.</p></div>
+        <div class="pbox reveal"><div class="ico">🔒</div><h3>Private &amp; safe</h3><p>Your number is shared only when you agree to connect.</p></div>
+        <div class="pbox reveal"><div class="ico">📞</div><h3>Real human support</h3><p>A real person on WhatsApp for any problem or complaint.</p></div>
       </div>
+      <p style="text-align:center;margin-top:22px" class="reveal"><a href="trust.html" style="color:var(--emerald);font-weight:700;text-decoration:none">Learn how we keep work real &amp; safe →</a></p>
     </div>
   </section>
 
-  <!-- PROMISE -->
-  <section class="promise">
+  <!-- WHAT TO EXPECT (honest) -->
+  <section class="value-sec">
     <div class="wrap">
-      <h2>The RealHands Promise</h2>
-      <p class="lead">आपका भरोसा, हमारी ज़िम्मेदारी</p>
-      <div class="pgrid">
-        <div class="pbox"><div class="e">✅</div><h3>Verified workers</h3><p>Phone-verified profiles with a ✔️ badge — hire real people.</p></div>
-        <div class="pbox"><div class="e">🔁</div><h3>Replacement guarantee</h3><p>If a confirmed worker doesn't show, we help find another — free.</p></div>
-        <div class="pbox"><div class="e">🔒</div><h3>Private &amp; safe</h3><p>Your number is shared only when you agree to connect.</p></div>
-        <div class="pbox"><div class="e">📞</div><h3>Real human support</h3><p>A real person on WhatsApp for any problem or complaint.</p></div>
+      <div class="eyebrow reveal">Why RealHands</div>
+      <h2 class="reveal">What you can expect</h2>
+      <p class="lead reveal">RealHands कैसे आपकी मदद करता है</p>
+      <div class="vcards">
+        <div class="vcard reveal"><div class="tag">👷 For workers</div><p>Register once, for free. Employers near you see your profile and reach you on WhatsApp. <b>No fees, no middleman — wages come straight to you.</b></p></div>
+        <div class="vcard reveal"><div class="tag">🏗️ For employers</div><p>Tell us what you need. We connect you with available workers nearby on WhatsApp — often within the hour.</p></div>
+        <div class="vcard reveal"><div class="tag">🤝 Simple &amp; safe</div><p>Works on WhatsApp, in Hindi or English. Verified workers, your number stays private, and real human support.</p></div>
       </div>
-      <p style="text-align:center;margin-top:18px;"><a href="trust.html" style="color:var(--green2);font-weight:600;text-decoration:none;">Learn how we keep work real &amp; safe →</a></p>
-    </div>
-  </section>
-
-  <!-- WHAT TO EXPECT (honest, pre-launch — no fabricated reviews) -->
-  <section class="trades">
-    <div class="wrap">
-      <h2>What you can expect</h2>
-      <p class="lead">RealHands कैसे आपकी मदद करता है</p>
-      <div class="tcards">
-        <div class="tcard">
-          <div class="q">👷 For workers</div>
-          <p>Register once, for free. Employers near you see your profile and reach you on WhatsApp. <b>No fees, no middleman — wages come straight to you.</b></p>
-        </div>
-        <div class="tcard">
-          <div class="q">🏗️ For employers</div>
-          <p>Tell us what you need. We connect you with available workers nearby on WhatsApp — often within the hour.</p>
-        </div>
-        <div class="tcard">
-          <div class="q">🤝 Simple &amp; safe</div>
-          <p>Works on WhatsApp, in Hindi or English. Verified workers, your number stays private, and real human support.</p>
-        </div>
-      </div>
-      <p class="lead" style="margin-top:18px;font-size:13px;">⭐ Real reviews from workers &amp; employers will appear here as RealHands grows.</p>
+      <p class="lead reveal" style="margin-top:22px;font-size:13.5px">⭐ Real reviews from workers &amp; employers will appear here as RealHands grows.</p>
     </div>
   </section>
 
   <!-- FAQ -->
   <section>
     <div class="wrap">
-      <h2>Questions? / सवाल?</h2>
-      <p class="lead">Frequently asked questions</p>
-      <div class="faq">
+      <div class="eyebrow reveal">FAQ</div>
+      <h2 class="reveal">Questions? / सवाल?</h2>
+      <p class="lead reveal">Everything you need to know</p>
+      <div class="faq reveal">
         <details><summary>Is it really free? / क्या यह मुफ़्त है?</summary><div class="ans">Yes — 100% free for both workers and employers. No charges, no commission.</div></details>
-        <details><summary>Do I need to download an app?</summary><div class="ans">No. Everything works on WhatsApp and this website. Nothing to install.</div></details>
-        <details><summary>How do I register as a worker?</summary><div class="ans">Tap "Find Work", fill the quick form (name, trade, area, rate), and you're listed. Employers will contact you on WhatsApp.</div></details>
+        <details><summary>Do I need to download an app?</summary><div class="ans">No. Everything works on WhatsApp and this website. You can also "Add to Home Screen" to use it like an app.</div></details>
+        <details><summary>How do I register as a worker?</summary><div class="ans">Tap "Find Work", fill the quick form (name, trade, area, rate), and you're listed. Employers contact you on WhatsApp.</div></details>
         <details><summary>How fast can I find workers?</summary><div class="ans">Usually within an hour for common trades in Hyderabad. We connect you with available workers nearby.</div></details>
         <details><summary>Which areas do you cover?</summary><div class="ans">Currently Hyderabad. Bangalore, Chennai &amp; Delhi are coming soon.</div></details>
       </div>
@@ -291,57 +288,109 @@
   </section>
 
   <!-- CTA BAND -->
-  <section class="band">
-    <div class="wrap">
-      <h2>Ready to start?</h2>
-      <p class="lead">अभी शुरू करें — बस एक WhatsApp message</p>
-      <div class="ctas">
-        <a class="btn work" href="register-worker.html">💼 काम चाहिए<small>Find Work</small></a>
-        <a class="btn hire" href="register-company.html">👷 श्रमिक चाहिए<small>Hire Workers</small></a>
+  <section style="padding:40px 0">
+    <div class="band">
+      <div class="inner">
+        <h2 class="reveal">Ready to start?</h2>
+        <p class="lead reveal">अभी शुरू करें — बस एक मिनट में</p>
+        <div class="ctas reveal">
+          <a class="btn primary" href="register-worker.html">💼 Find Work</a>
+          <a class="btn ghost" href="register-company.html">👷 Hire Workers</a>
+        </div>
+        <p class="reveal" style="margin-top:28px">
+          <span class="city">📍 Hyderabad</span>
+          <span class="city soon">Bangalore — soon</span>
+          <span class="city soon">Chennai — soon</span>
+          <span class="city soon">Delhi — soon</span>
+        </p>
+        <br><button class="sharebtn" onclick="shareSite()">📲 Share RealHands</button>
       </div>
-      <p class="lead" style="margin-top:28px;">
-        <span class="city">📍 Hyderabad</span>
-        <span class="city soon">Bangalore — soon</span>
-        <span class="city soon">Chennai — soon</span>
-        <span class="city soon">Delhi — soon</span>
-      </p>
-      <button class="sharebtn" onclick="shareSite()">📲 Share RealHands</button>
     </div>
   </section>
 
   <footer>
     <div class="wrap">
       <div>
-        <div class="logo" style="color:#fff;"><img class="mark" src="/logo-mark.svg" alt="" />RealHands</div>
-        <p style="margin-top:6px;opacity:.8;">India's WhatsApp marketplace for real work.</p>
+        <div class="logo"><img src="/logo-mark.svg" alt="" style="width:30px;height:30px;vertical-align:middle;margin-right:6px" />RealHands</div>
+        <p style="margin-top:8px;opacity:.8">India's marketplace for real work.</p>
       </div>
       <div>
         <a href="trust.html">Trust &amp; Safety</a> &nbsp;·&nbsp;
-        <a href="https://wa.me/__WA_NUMBER__?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a> &nbsp;·&nbsp;
+        <a href="workers.html">Find Workers</a> &nbsp;·&nbsp;
         <a href="#" onclick="shareSite();return false;">Share</a> &nbsp;·&nbsp;
-        <span style="opacity:.7;">© <span id="yr"></span> RealHands</span>
+        <span style="opacity:.7">© <span id="yr"></span> RealHands</span>
       </div>
     </div>
   </footer>
 
-  <a class="fab" href="https://wa.me/__WA_NUMBER__?text=Hi" target="_blank" rel="noopener">💬 Chat</a>
+  <!-- Chat widget -->
+  <div id="chatLauncher" class="chat-launcher" onclick="toggleChat()">💬<span class="dot"></span></div>
+  <div id="chatPanel" class="chat-panel">
+    <div class="chat-head">
+      <img src="/logo-mark.svg" alt="" />
+      <div><div class="ch-name">RealHands</div><div class="ch-sub">● We reply on WhatsApp</div></div>
+      <button class="ch-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="ch-msg bot">👋 Namaste! Tell us what you need — we'll continue the chat on WhatsApp.</div>
+      <div class="ch-quick">
+        <button onclick="chatQuick('work')">💼 I'm looking for work</button>
+        <button onclick="chatQuick('hire')">👷 I want to hire workers</button>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input id="chatText" placeholder="Type your message…" onkeydown="if(event.key==='Enter')chatSend()" />
+      <button onclick="chatSend()" aria-label="Send">➤</button>
+    </div>
+    <div class="chat-foot">🔒 Continues securely on WhatsApp</div>
+  </div>
 
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+    // Scroll reveal
+    const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Count-up
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const target = +el.getAttribute('data-count'); let n = 0;
+      const step = Math.max(1, Math.round(target / 30));
+      const t = setInterval(() => { n += step; if (n >= target) { n = target; clearInterval(t); } el.textContent = n; }, 40);
+    });
+
+    function goSearch() {
+      const t = document.getElementById('hsTrade').value, a = document.getElementById('hsArea').value.trim();
+      const p = new URLSearchParams(); if (t) p.set('trade', t); if (a) p.set('q', a);
+      location.href = 'workers.html' + (p.toString() ? '?' + p.toString() : '');
+    }
+
     function shareSite() {
       const url = location.origin + location.pathname.replace(/index\.html$/, '');
       const data = { title: 'RealHands', text: 'Find work or hire workers — free on RealHands', url };
       if (navigator.share) navigator.share(data).catch(() => {});
       else window.open('https://wa.me/?text=' + encodeURIComponent(data.text + ' ' + url), '_blank');
     }
-    function goSearch() {
-      const t = document.getElementById('hsTrade').value;
-      const a = document.getElementById('hsArea').value.trim();
-      const p = new URLSearchParams();
-      if (t) p.set('trade', t);
-      if (a) p.set('q', a);
-      location.href = 'workers.html' + (p.toString() ? '?' + p.toString() : '');
+
+    // Chat widget → WhatsApp
+    function toggleChat() {
+      document.getElementById('chatPanel').classList.toggle('open');
+      document.getElementById('chatLauncher').classList.toggle('hide');
+    }
+    function waOpen(text) { window.open('https://wa.me/__WA_NUMBER__?text=' + encodeURIComponent(text), '_blank'); }
+    function pushUser(t) { const b = document.getElementById('chatBody'); const d = document.createElement('div'); d.className = 'ch-msg user'; d.textContent = t; b.appendChild(d); b.scrollTop = b.scrollHeight; }
+    function botReply(t) { const b = document.getElementById('chatBody'); const d = document.createElement('div'); d.className = 'ch-msg bot'; d.innerHTML = t + ' <a href="https://wa.me/__WA_NUMBER__" target="_blank" rel="noopener" style="color:#075E54;font-weight:800">Continue on WhatsApp →</a>'; b.appendChild(d); b.scrollTop = b.scrollHeight; }
+    function chatQuick(t) {
+      pushUser(t === 'work' ? "💼 I'm looking for work" : "👷 I want to hire workers");
+      botReply("Great! Opening WhatsApp so we can help you.");
+      waOpen(t === 'work' ? "Hi RealHands! I'm looking for work (KAAM)." : "Hi RealHands! I want to hire workers (HIRE).");
+    }
+    function chatSend() {
+      const el = document.getElementById('chatText'); const v = el.value.trim(); if (!v) return;
+      pushUser(v); el.value = '';
+      botReply("Thanks! Opening WhatsApp to continue.");
+      waOpen("Hi RealHands! " + v);
     }
   </script>
 </body>
