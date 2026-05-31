@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hire Workers — RealHands</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <style>
+    :root { --green:#075E54; --green2:#128C7E; --wa:#25D366; --ink:#1a2b29; --muted:#6b7c79; --bg:#eef2f1; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+    header { background: linear-gradient(135deg, var(--green2), var(--green)); color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+    header img { width: 40px; height: 40px; }
+    header h1 { font-size: 18px; } header .sub { font-size: 12px; opacity: .85; }
+    header a { margin-left: auto; color: #fff; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.18); padding: 7px 12px; border-radius: 16px; }
+    .card { max-width: 480px; margin: 22px auto; background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+    .card h2 { font-size: 20px; margin-bottom: 4px; }
+    .card .lead { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin: 14px 0 6px; }
+    input, select { width: 100%; padding: 12px 14px; border: 1px solid #d6dedc; border-radius: 10px; font-size: 15px; background: #fff; }
+    input:focus, select:focus { outline: none; border-color: var(--green2); }
+    .btn { width: 100%; margin-top: 22px; padding: 14px; background: var(--wa); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; }
+    .btn:disabled { opacity: .6; }
+    .ok { display: none; text-align: center; padding: 10px; }
+    .ok .big { font-size: 44px; } .ok h2 { color: var(--green); margin: 8px 0; }
+    .ok p { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .ok a { display: inline-block; background: var(--wa); color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; }
+    .err { color: #c0392b; font-size: 13px; margin-top: 10px; min-height: 16px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo-mark.svg" alt="RealHands" />
+    <div><h1>Hire Workers</h1><div class="sub">श्रमिक चाहिए</div></div>
+    <a href="index.html">← Home</a>
+  </header>
+
+  <div class="card" id="formCard">
+    <h2>श्रमिक के लिए request डालें</h2>
+    <p class="lead">Tell us what you need — we'll connect you with workers nearby.</p>
+    <form id="form">
+      <label>Your Name / Company / आपका नाम *</label>
+      <input id="contact_name" required placeholder="e.g. Sharma Constructions" />
+
+      <label>WhatsApp Number / नंबर *</label>
+      <input id="phone" required type="tel" inputmode="numeric" placeholder="10-digit mobile number" />
+
+      <label>Worker Needed / कौन सा श्रमिक चाहिए *</label>
+      <select id="trade_needed" required>
+        <option value="">— Select —</option>
+        <option>🧱 Mason / राजमिस्त्री</option>
+        <option>🔨 Carpenter / बढ़ई</option>
+        <option>⚡ Electrician / इलेक्ट्रीशियन</option>
+        <option>🔧 Plumber / प्लंबर</option>
+        <option>🏗️ General Labour / लेबर</option>
+        <option>🚛 Driver / ड्राइवर</option>
+        <option>🎨 Painter / पेंटर</option>
+        <option>🧹 Cleaner / सफाई कर्मी</option>
+        <option>💂 Security Guard / गार्ड</option>
+        <option>🌱 Gardener / माली</option>
+        <option>🍳 Cook / Maid / रसोइया-मेड</option>
+        <option>🔥 Welder / वेल्डर</option>
+      </select>
+
+      <label>How many workers? / कितने लोग *</label>
+      <select id="workers_needed" required>
+        <option value="">— Select —</option>
+        <option>1 person</option>
+        <option>2–5 people</option>
+        <option>5–10 people</option>
+        <option>10+ people</option>
+      </select>
+
+      <label>Work Location / काम की जगह *</label>
+      <input id="location" required placeholder="e.g. Banjara Hills, Hyderabad" />
+
+      <label>When do you need them? / कब से *</label>
+      <select id="start_when" required>
+        <option value="">— Select —</option>
+        <option>Today / आज</option>
+        <option>Tomorrow / कल</option>
+        <option>This week / इस हफ्ते</option>
+      </select>
+
+      <button class="btn" type="submit" id="submitBtn">Find Workers / श्रमिक ढूंढें</button>
+      <div class="err" id="err"></div>
+    </form>
+  </div>
+
+  <div class="card ok" id="okCard">
+    <div class="big">✅</div>
+    <h2>Request मिल गई!</h2>
+    <p>We've got your request. Tap below to confirm on WhatsApp so we can share workers with you.</p>
+    <a id="waLink" href="#" target="_blank" rel="noopener">💬 Confirm on WhatsApp</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script>
+    const WA_NUMBER = '917845148919';
+    const form = document.getElementById('form');
+    const btn = document.getElementById('submitBtn');
+    const err = document.getElementById('err');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.textContent = '';
+      const data = {
+        contact_name: contact_name.value.trim(),
+        phone: phone.value.trim(),
+        trade_needed: trade_needed.value,
+        workers_needed: workers_needed.value,
+        location: location.value.trim(),
+        start_when: start_when.value,
+      };
+      if (data.phone.replace(/\D/g, '').length < 10) { err.textContent = 'Please enter a valid 10-digit number.'; return; }
+
+      btn.disabled = true; btn.textContent = 'Sending…';
+      await saveToDatabase('company_requests', data);   // saves if Supabase is configured
+      btn.disabled = false; btn.textContent = 'Find Workers / श्रमिक ढूंढें';
+
+      const msg = `Hire request:%0A` +
+        `Name: ${data.contact_name}%0APhone: ${data.phone}%0AWorker needed: ${data.trade_needed}%0A` +
+        `How many: ${data.workers_needed}%0ALocation: ${data.location}%0AWhen: ${data.start_when}`;
+      document.getElementById('waLink').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('okCard').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
