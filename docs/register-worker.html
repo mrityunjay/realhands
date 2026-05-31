@@ -43,6 +43,14 @@
       <label>Your Name / आपका नाम *</label>
       <input id="name" required placeholder="e.g. Ramesh Kumar" />
 
+      <label>Gender / लिंग *</label>
+      <select id="gender" required>
+        <option value="">— Select —</option>
+        <option>Male / पुरुष</option>
+        <option>Female / महिला</option>
+        <option>Other / अन्य</option>
+      </select>
+
       <label>WhatsApp Number / नंबर *</label>
       <input id="phone" required type="tel" inputmode="numeric" placeholder="10-digit mobile number" />
 
@@ -110,6 +118,7 @@
       err.textContent = '';
       const data = {
         name: name.value.trim(),
+        gender: gender.value,
         phone: phone.value.trim(),
         trade: trade.value,
         experience: experience.value,
@@ -124,7 +133,7 @@
 
       // Build WhatsApp confirmation message (works whether or not DB is on)
       const msg = `Worker registration:%0A` +
-        `Name: ${data.name}%0APhone: ${data.phone}%0ATrade: ${data.trade}%0A` +
+        `Name: ${data.name}%0AGender: ${data.gender}%0APhone: ${data.phone}%0ATrade: ${data.trade}%0A` +
         `Experience: ${data.experience}%0AArea: ${data.area}%0AWage: ${data.wage}`;
       document.getElementById('waLink').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
