@@ -3,8 +3,8 @@
 // then paste your Project URL and the "anon public" key below (Settings → API).
 // Until then, forms still work — they send the details to WhatsApp.
 
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';            // e.g. https://abcd1234.supabase.co
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';  // long "anon public" key
+const SUPABASE_URL = 'https://byqihicwqxqnkugrkexv.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_kcPMHpOQWUp5aRpQHYW4TQ_N-XK4krG';  // publishable (public) key — safe in frontend
 
 const SUPABASE_CONFIGURED =
   !SUPABASE_URL.startsWith('YOUR_') && !SUPABASE_ANON_KEY.startsWith('YOUR_');
