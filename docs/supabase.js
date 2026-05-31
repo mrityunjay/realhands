@@ -29,3 +29,20 @@ async function saveToDatabase(table, row) {
     return { saved: false, reason: e.message };
   }
 }
+
+// Read rows (e.g. the public, phone-free "workers_public" view for Browse Workers).
+// Returns an array, or null if Supabase isn't configured / unreachable.
+async function fetchFromDatabase(table, opts) {
+  opts = opts || {};
+  const c = sbClient();
+  if (!c) return null;
+  try {
+    let q = c.from(table).select(opts.select || '*');
+    if (opts.eqCol) q = q.eq(opts.eqCol, opts.eqVal);
+    if (opts.order) q = q.order(opts.order, { ascending: false });
+    const { data, error } = await q;
+    return error ? null : data;
+  } catch (e) {
+    return null;
+  }
+}

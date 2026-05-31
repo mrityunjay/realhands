@@ -45,7 +45,7 @@
     <a class="home" href="index.html">← Home</a>
   </header>
 
-  <div class="demo">⭐ Sample profiles — these become real registered workers once your database is connected.</div>
+  <div class="demo" id="banner">Loading workers…</div>
 
   <div class="searchbar">
     <input id="search" placeholder="🔍 Search by name, trade or area…" oninput="render()" />
@@ -57,65 +57,100 @@
     <div class="grid" id="grid"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
   <script src="workers-data.js"></script>
   <script>
     const WA_NUMBER = '917845148919';
     const TRADES = ['All','Mason','Electrician','Plumber','Carpenter','Driver','Painter','Cleaner','Security','Gardener','Cook/Maid','Welder'];
     const EMOJI = { Mason:'🧱', Electrician:'⚡', Plumber:'🔧', Carpenter:'🔨', Driver:'🚛', Painter:'🎨', Cleaner:'🧹', Security:'💂', Gardener:'🌱', 'Cook/Maid':'🍳', Welder:'🔥' };
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    let WORKERS = [], activeTrade = 'All';
 
-    // Sample workers come from workers-data.js (shared with the profile page).
-    const WORKERS = window.RH_WORKERS || [];
+    function stars(r){ const f = Math.round(r); return '★'.repeat(f) + '☆'.repeat(5 - f); }
+    function tradeKeyFrom(s){ s = s || ''; return TRADES.find(t => t !== 'All' && s.includes(t)) || ''; }
 
-    let activeTrade = 'All';
-
-    function stars(r) {
-      const full = Math.round(r);
-      return '★'.repeat(full) + '☆'.repeat(5 - full);
+    function normalizeSample(w){
+      return { id:w.id, profile:true, emoji:EMOJI[w.trade]||'', name:w.name, tradeKey:w.trade,
+        tradeLabel:(EMOJI[w.trade]||'')+' '+w.trade, exp:w.exp, area:w.area, wage:w.wage?w.wage+'/day':'',
+        rating:w.rating, jobs:w.jobs, verified:!!w.verified, available:w.available, isNew:false };
+    }
+    function normalizeReal(r){
+      const key = tradeKeyFrom(r.trade);
+      return { id:r.id, profile:false, emoji:EMOJI[key]||Array.from(r.trade||'')[0]||'👷', name:r.name||'Worker',
+        tradeKey:key, tradeLabel:r.trade||key||'Worker', exp:r.experience||'', area:r.area||'', wage:r.wage||'',
+        rating:null, jobs:null, verified:false, available:true, isNew:true };
     }
 
-    function chipsHtml() {
+    function chipsHtml(){
       document.getElementById('chips').innerHTML = TRADES.map(t =>
         `<div class="chip ${t===activeTrade?'active':''}" onclick="setTrade('${t}')">${t==='All'?'All':((EMOJI[t]||'')+' '+t)}</div>`
       ).join('');
     }
     function setTrade(t){ activeTrade = t; chipsHtml(); render(); }
 
-    function render() {
+    function render(){
       const q = document.getElementById('search').value.trim().toLowerCase();
       const list = WORKERS.filter(w => {
-        const matchTrade = activeTrade==='All' || w.trade===activeTrade;
-        const matchQ = !q || (w.name+' '+w.trade+' '+w.area).toLowerCase().includes(q);
-        return matchTrade && matchQ;
+        const mt = activeTrade === 'All' || w.tradeKey === activeTrade || (w.tradeLabel||'').includes(activeTrade);
+        const mq = !q || (w.name + ' ' + w.tradeLabel + ' ' + w.area).toLowerCase().includes(q);
+        return mt && mq;
       });
       document.getElementById('count').textContent = `${list.length} worker${list.length!==1?'s':''} found`;
-      document.getElementById('grid').innerHTML = list.length ? list.map(w => {
-        const initials = w.name.split(' ').map(s=>s[0]).slice(0,2).join('');
-        const waMsg = encodeURIComponent(`Hi, I want to hire ${w.name} (${w.trade}) from RealHands.`);
+      if (!list.length){
+        document.getElementById('grid').innerHTML = WORKERS.length
+          ? '<div class="empty">No workers match your search.</div>'
+          : '<div class="empty">No workers registered yet — <a href="register-worker.html" style="color:var(--green2);font-weight:700">be the first!</a></div>';
+        return;
+      }
+      document.getElementById('grid').innerHTML = list.map(w => {
+        const initials = (w.name||'?').split(' ').map(s=>s[0]).slice(0,2).join('');
+        const waMsg = encodeURIComponent(`Hi, I want to hire ${w.name} (${w.tradeLabel}) from RealHands.`);
+        const head = `
+          <div class="avatar">${w.emoji||initials}</div>
+          <div>
+            <div class="wname">${esc(w.name)} ${w.verified?'<span class="verified" title="Verified">✔️</span>':''}</div>
+            <div class="wtrade">${esc(w.tradeLabel)}${w.exp?' · '+esc(w.exp):''}</div>
+            ${w.rating!=null ? `<div class="stars">${stars(w.rating)} <span>${w.rating} (${w.jobs} jobs)</span></div>`
+                             : `<div class="stars" style="color:#0a7a3d">🆕 New worker</div>`}
+          </div>`;
+        const top = w.profile
+          ? `<a class="wtop" href="worker.html?id=${w.id}" style="text-decoration:none;color:inherit;cursor:pointer;">${head}</a>`
+          : `<div class="wtop">${head}</div>`;
         return `
           <div class="wcard">
-            <a class="wtop" href="worker.html?id=${w.id}" style="text-decoration:none;color:inherit;cursor:pointer;">
-              <div class="avatar">${EMOJI[w.trade]||initials}</div>
-              <div>
-                <div class="wname">${w.name} ${w.verified?'<span class="verified" title="Verified">✔️</span>':''}</div>
-                <div class="wtrade">${EMOJI[w.trade]||''} ${w.trade} · ${w.exp}</div>
-                <div class="stars">${stars(w.rating)} <span>${w.rating} (${w.jobs} jobs)</span></div>
-              </div>
-            </a>
+            ${top}
             <div class="meta">
-              <span class="tag">📍 ${w.area}</span>
-              <span class="tag wage">${w.wage}/day</span>
-              ${w.available?'<span class="tag avail">🟢 Available</span>':'<span class="tag">⚪ Busy</span>'}
+              <span class="tag">📍 ${esc(w.area||'—')}</span>
+              ${w.wage?`<span class="tag wage">${esc(w.wage)}</span>`:''}
+              ${w.isNew ? '<span class="tag" style="background:#e0f2fe;color:#0369a1">🆕 New</span>'
+                        : (w.available?'<span class="tag avail">🟢 Available</span>':'<span class="tag">⚪ Busy</span>')}
             </div>
             <a class="contact" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">💬 Contact on WhatsApp</a>
           </div>`;
-      }).join('') : '<div class="empty">No workers match your search.</div>';
+      }).join('');
+    }
+
+    async function loadWorkers(){
+      let rows = null;
+      try { rows = await fetchFromDatabase('workers_public', { order: 'created_at' }); } catch (e) {}
+      const banner = document.getElementById('banner');
+      if (rows === null){
+        WORKERS = (window.RH_WORKERS || []).map(normalizeSample);
+        banner.innerHTML = '⭐ Example profiles shown (live database not connected here).';
+      } else {
+        WORKERS = rows.map(normalizeReal);
+        banner.innerHTML = '✅ Registered workers near you — contact them free on WhatsApp.';
+      }
+      render();
     }
 
     // init
     const params = new URLSearchParams(location.search);
     if (params.get('trade')) activeTrade = params.get('trade');
     if (params.get('q')) document.getElementById('search').value = params.get('q');
-    chipsHtml(); render();
+    chipsHtml();
+    loadWorkers();
   </script>
 </body>
 </html>
