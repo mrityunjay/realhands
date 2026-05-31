@@ -116,14 +116,15 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       err.textContent = '';
+      const $ = (id) => document.getElementById(id);
       const data = {
-        name: name.value.trim(),
-        gender: gender.value,
-        phone: phone.value.trim(),
-        trade: trade.value,
-        experience: experience.value,
-        area: area.value.trim(),
-        wage: wage.value,
+        name: $('name').value.trim(),
+        gender: $('gender').value,
+        phone: $('phone').value.trim(),
+        trade: $('trade').value,
+        experience: $('experience').value,
+        area: $('area').value.trim(),
+        wage: $('wage').value,
       };
       if (data.phone.replace(/\D/g, '').length < 10) { err.textContent = 'Please enter a valid 10-digit number.'; return; }
 

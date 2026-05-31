@@ -105,13 +105,14 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       err.textContent = '';
+      const $ = (id) => document.getElementById(id);
       const data = {
-        contact_name: contact_name.value.trim(),
-        phone: phone.value.trim(),
-        trade_needed: trade_needed.value,
-        workers_needed: workers_needed.value,
-        location: location.value.trim(),
-        start_when: start_when.value,
+        contact_name: $('contact_name').value.trim(),
+        phone: $('phone').value.trim(),
+        trade_needed: $('trade_needed').value,
+        workers_needed: $('workers_needed').value,
+        location: $('location').value.trim(),
+        start_when: $('start_when').value,
       };
       if (data.phone.replace(/\D/g, '').length < 10) { err.textContent = 'Please enter a valid 10-digit number.'; return; }
 
