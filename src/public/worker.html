@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Worker Profile — RealHands</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root { --green:#075E54; --green2:#128C7E; --wa:#25D366; --ink:#1a2b29; --muted:#6b7c79; --bg:#eef2f1; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--ink); padding-bottom: 84px; }
+    header { background: linear-gradient(135deg, var(--green2), var(--green)); color: #fff; padding: 14px 18px; display: flex; align-items: center; gap: 10px; }
+    header img { width: 36px; height: 36px; }
+    header h1 { font-size: 16px; }
+    header a.back { color: #fff; text-decoration: none; font-size: 20px; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
+    .pcard { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 1px 5px rgba(0,0,0,.07); margin-bottom: 14px; }
+    .phero { display: flex; gap: 16px; align-items: center; }
+    .avatar { width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg,var(--green2),var(--green)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 700; flex-shrink: 0; }
+    .pname { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+    .verified { color: #1d9bf0; font-size: 17px; }
+    .ptrade { color: var(--muted); font-size: 14px; margin-top: 2px; }
+    .stars { color: #ff9800; font-weight: 700; margin-top: 6px; }
+    .stars span { color: var(--muted); font-weight: 400; font-size: 13px; }
+    .avail { display: inline-block; margin-top: 8px; background: #d4f5e0; color: #0a7a3d; font-weight: 700; font-size: 12px; padding: 4px 12px; border-radius: 14px; }
+    .busy { display: inline-block; margin-top: 8px; background: #eee; color: #777; font-weight: 700; font-size: 12px; padding: 4px 12px; border-radius: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; text-align: center; }
+    .stats .s b { display: block; font-size: 18px; color: var(--green); }
+    .stats .s span { font-size: 11px; color: var(--muted); }
+    h3.sec { font-size: 15px; margin-bottom: 10px; }
+    .about { color: #333; font-size: 14px; line-height: 1.6; }
+    .skills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill { background: var(--bg); border-radius: 16px; padding: 6px 14px; font-size: 13px; }
+    .review { border-bottom: 1px solid #f0f3f2; padding: 12px 0; }
+    .review:last-child { border-bottom: none; }
+    .review .rtop { display: flex; justify-content: space-between; font-size: 13px; }
+    .review .who { font-weight: 700; }
+    .review .rstars { color: #ff9800; font-size: 13px; }
+    .review .when { color: #aab; font-size: 12px; }
+    .review p { font-size: 14px; color: #333; margin-top: 4px; }
+    .bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; box-shadow: 0 -2px 10px rgba(0,0,0,.1); padding: 12px 16px; display: flex; gap: 10px; max-width: 720px; margin: 0 auto; }
+    .bar a, .bar button { flex: 1; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
+    .bar .contact { background: var(--wa); color: #fff; }
+    .bar .share { background: var(--bg); color: var(--green); }
+    .nf { text-align: center; padding: 50px 20px; color: var(--muted); }
+    .nf a { color: var(--green2); }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="back" href="workers.html">←</a>
+    <img src="/logo-mark.svg" alt="RealHands" />
+    <h1>Worker Profile</h1>
+  </header>
+
+  <div id="app" class="wrap"></div>
+
+  <script src="workers-data.js"></script>
+  <script>
+    const WA_NUMBER = '__WA_NUMBER__';
+    const EMOJI = { Mason:'🧱', Electrician:'⚡', Plumber:'🔧', Carpenter:'🔨', Driver:'🚛', Painter:'🎨', Cleaner:'🧹', Security:'💂', Gardener:'🌱', 'Cook/Maid':'🍳', Welder:'🔥' };
+    const starStr = r => '★'.repeat(Math.round(r)) + '☆'.repeat(5 - Math.round(r));
+
+    const id = parseInt(new URLSearchParams(location.search).get('id'), 10);
+    const w = (window.RH_WORKERS || []).find(x => x.id === id);
+    const app = document.getElementById('app');
+
+    if (!w) {
+      app.innerHTML = '<div class="nf">Worker not found.<br><a href="workers.html">← Back to all workers</a></div>';
+    } else {
+      const waMsg = encodeURIComponent(`Hi, I want to hire ${w.name} (${w.trade}) from RealHands.`);
+      const skills = (w.skills||[]).map(s => `<span class="skill">${s}</span>`).join('');
+      const reviews = (w.reviews||[]).map(r => `
+        <div class="review">
+          <div class="rtop"><span class="who">${r.by}</span><span class="when">${r.when}</span></div>
+          <div class="rstars">${starStr(r.stars)}</div>
+          <p>${r.text}</p>
+        </div>`).join('');
+
+      app.innerHTML = `
+        <div class="pcard">
+          <div class="phero">
+            <div class="avatar">${EMOJI[w.trade] || w.name[0]}</div>
+            <div>
+              <div class="pname">${w.name} ${w.verified ? '<span class="verified" title="Verified">✔️</span>' : ''}</div>
+              <div class="ptrade">${EMOJI[w.trade]||''} ${w.trade} · ${w.exp} · 📍 ${w.area}</div>
+              <div class="stars">${starStr(w.rating)} <span>${w.rating} · ${w.jobs} jobs</span></div>
+              ${w.available ? '<span class="avail">🟢 Available now</span>' : '<span class="busy">⚪ Busy</span>'}
+            </div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="stats">
+            <div class="s"><b>${w.exp}</b><span>Experience</span></div>
+            <div class="s"><b>${w.jobs}</b><span>Jobs done</span></div>
+            <div class="s"><b>${w.responseTime||'—'}</b><span>Responds in</span></div>
+            <div class="s"><b>${w.repeat||'—'}</b><span>Repeat clients</span></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <h3 class="sec">About</h3>
+          <p class="about">${w.about||''}</p>
+          <div style="margin-top:8px;"><span class="skill wage" style="background:#fff3d6;color:#8a6d1b;font-weight:700;">💰 ${w.wage}/day</span></div>
+        </div>
+
+        <div class="pcard">
+          <h3 class="sec">Skills</h3>
+          <div class="skills">${skills}</div>
+        </div>
+
+        <div class="pcard">
+          <h3 class="sec">⭐ Reviews (${(w.reviews||[]).length})</h3>
+          ${reviews || '<p class="about">No reviews yet.</p>'}
+        </div>
+      `;
+
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.innerHTML = `
+        <a class="contact" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">💬 Contact</a>
+        <button class="share" onclick="shareProfile()">🔗 Share</button>`;
+      document.body.appendChild(bar);
+    }
+
+    function shareProfile() {
+      const url = location.href;
+      const text = w ? `Hire ${w.name} (${w.trade}) on RealHands` : 'RealHands';
+      if (navigator.share) {
+        navigator.share({ title: 'RealHands', text, url }).catch(()=>{});
+      } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+      }
+    }
+  </script>
+</body>
+</html>

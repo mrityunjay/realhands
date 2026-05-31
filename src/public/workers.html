@@ -57,26 +57,14 @@
     <div class="grid" id="grid"></div>
   </div>
 
+  <script src="workers-data.js"></script>
   <script>
     const WA_NUMBER = '__WA_NUMBER__';
     const TRADES = ['All','Mason','Electrician','Plumber','Carpenter','Driver','Painter','Cleaner','Security','Gardener','Cook/Maid','Welder'];
     const EMOJI = { Mason:'🧱', Electrician:'⚡', Plumber:'🔧', Carpenter:'🔨', Driver:'🚛', Painter:'🎨', Cleaner:'🧹', Security:'💂', Gardener:'🌱', 'Cook/Maid':'🍳', Welder:'🔥' };
 
-    // Sample workers (replaced by real data once the database is live)
-    const WORKERS = [
-      { name:'Ramesh Kumar', trade:'Mason', rating:4.8, jobs:62, exp:'5 yrs', area:'Kukatpally', wage:'₹700–900', verified:true, available:true },
-      { name:'Suresh Yadav', trade:'Electrician', rating:4.6, jobs:48, exp:'7 yrs', area:'Ameerpet', wage:'₹900–1200', verified:true, available:false },
-      { name:'Lakshmi Devi', trade:'Cook/Maid', rating:4.9, jobs:80, exp:'6 yrs', area:'Madhapur', wage:'₹600–800', verified:true, available:true },
-      { name:'Imran Khan', trade:'Plumber', rating:4.7, jobs:39, exp:'6 yrs', area:'Mehdipatnam', wage:'₹700–900', verified:false, available:true },
-      { name:'Venkat Rao', trade:'Carpenter', rating:4.5, jobs:55, exp:'8 yrs', area:'LB Nagar', wage:'₹900–1200', verified:true, available:false },
-      { name:'Ravi Teja', trade:'Driver', rating:4.4, jobs:27, exp:'4 yrs', area:'Secunderabad', wage:'₹600–800', verified:false, available:true },
-      { name:'Anil Kumar', trade:'Painter', rating:4.6, jobs:44, exp:'5 yrs', area:'KPHB', wage:'₹700–900', verified:true, available:true },
-      { name:'Mahesh Singh', trade:'Security', rating:4.3, jobs:18, exp:'2 yrs', area:'Hitech City', wage:'₹500–700', verified:false, available:true },
-      { name:'Krishna M', trade:'Welder', rating:4.7, jobs:51, exp:'9 yrs', area:'Balanagar', wage:'₹900–1200', verified:true, available:false },
-      { name:'Sunita Bai', trade:'Cleaner', rating:4.8, jobs:66, exp:'4 yrs', area:'Gachibowli', wage:'₹500–700', verified:true, available:true },
-      { name:'Gopal Reddy', trade:'Gardener', rating:4.5, jobs:22, exp:'3 yrs', area:'Jubilee Hills', wage:'₹500–700', verified:false, available:true },
-      { name:'Farhan Ali', trade:'Electrician', rating:4.9, jobs:73, exp:'10 yrs', area:'Tolichowki', wage:'₹900–1200', verified:true, available:true },
-    ];
+    // Sample workers come from workers-data.js (shared with the profile page).
+    const WORKERS = window.RH_WORKERS || [];
 
     let activeTrade = 'All';
 
@@ -105,14 +93,14 @@
         const waMsg = encodeURIComponent(`Hi, I want to hire ${w.name} (${w.trade}) from RealHands.`);
         return `
           <div class="wcard">
-            <div class="wtop">
+            <a class="wtop" href="worker.html?id=${w.id}" style="text-decoration:none;color:inherit;cursor:pointer;">
               <div class="avatar">${EMOJI[w.trade]||initials}</div>
               <div>
                 <div class="wname">${w.name} ${w.verified?'<span class="verified" title="Verified">✔️</span>':''}</div>
                 <div class="wtrade">${EMOJI[w.trade]||''} ${w.trade} · ${w.exp}</div>
                 <div class="stars">${stars(w.rating)} <span>${w.rating} (${w.jobs} jobs)</span></div>
               </div>
-            </div>
+            </a>
             <div class="meta">
               <span class="tag">📍 ${w.area}</span>
               <span class="tag wage">${w.wage}/day</span>
